@@ -37,12 +37,14 @@ cd demo
 docker compose up -d
 python3 scripts/generate_sample_data.py
 python3 scripts/push_pr_metrics.py
+python3 scripts/push_usage_metrics.py
 npx tsx seed-data.ts
+npx tsx seed-cli-data.ts
 ```
 
 Then open:
-- Grafana: http://localhost:3001
-- Jaeger: http://localhost:16686
+- Grafana: http://localhost:3001 (two dashboards: Unified + ROI & Cost Efficiency)
+- Jaeger: http://localhost:16686 (services: copilot-chat, github-copilot)
 - Prometheus: http://localhost:9090
 
 For endpoint realism details and protocol-shape mapping, see [docs/runbook/public-demo-quickstart.md](docs/runbook/public-demo-quickstart.md).
