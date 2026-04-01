@@ -27,6 +27,14 @@
       "icon": "external link",
       "targetBlank": true,
       "tooltip": "Open Jaeger UI to explore traces"
+    },
+    {
+      "title": "ROI & Cost Dashboard",
+      "type": "link",
+      "url": "/d/copilot-roi-dashboard",
+      "icon": "dashboard",
+      "targetBlank": false,
+      "tooltip": "Cost efficiency, cache metrics, and productivity impact"
     }
   ],
   "panels": [

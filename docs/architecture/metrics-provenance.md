@@ -1,6 +1,10 @@
 # Metrics Provenance — Source-to-Panel Chain
 
-Every metric shown in the ObserVader Grafana dashboard traces back to an official GitHub or OpenTelemetry specification. This document maps: **Official Doc → Field/Attribute → Seeder File → Prometheus Metric → Grafana Panel**.
+Every metric shown in the ObserVader Grafana dashboards traces back to an official GitHub or OpenTelemetry specification. This document maps: **Official Doc → Field/Attribute → Seeder File → Prometheus Metric → Grafana Panel**.
+
+Two dashboards:
+- **Copilot Metrics — Unified Dashboard**: Adoption, code generation, agent observability, team analytics
+- **Copilot ROI & Cost Efficiency**: Cost, cache efficiency, productivity impact (CLI OTel data)
 
 Anyone plugging real data into this stack should see the same shapes — the seeded data is modeled after real API response schemas and OTel signal conventions.
 
@@ -13,9 +17,9 @@ For full field definitions, see the skill references linked in each section.
 
 | Source | Transport | Seeder | Prometheus Path | Status |
 |--------|-----------|--------|-----------------|--------|
-| Usage Metrics API (NDJSON) | Pushgateway | `generate_sample_data.py` + `push_pr_metrics.py` | Pushgateway → Prometheus scrape | **Partial** — PR metrics pushed; adoption/feature/LoC/CCR metrics generated in NDJSON but not yet pushed |
+| Usage Metrics API (NDJSON) | Pushgateway | `generate_sample_data.py` + `push_pr_metrics.py` + `push_usage_metrics.py` | Pushgateway → Prometheus scrape | **Active** — PR metrics + adoption/feature/LoC/CCR metrics all pushed |
 | IDE OTel (traces + metrics) | OTLP HTTP | `seed-data.ts` | OTel Collector → Prometheus exporter | **Active** |
-| CLI OTel (traces + metrics) | OTLP HTTP | `seed-cli-data.ts` (planned) | OTel Collector → Prometheus exporter | **Planned** |
+| CLI OTel (traces + metrics) | OTLP HTTP | `seed-cli-data.ts` | OTel Collector → Prometheus exporter | **Active** |
 
 ---
 
@@ -30,19 +34,19 @@ For full field definitions, see the skill references linked in each section.
 
 | API Field | NDJSON Location | Seeder | Prometheus Metric | Grafana Panel | Status |
 |-----------|----------------|--------|-------------------|---------------|--------|
-| `total_active_users` | `$.total_active_users` | `generate_sample_data.py` | `copilot_daily_active_users` | DAU Over Time, Daily Active Users | **Gap** — NDJSON generated, no Pushgateway script |
-| `total_engaged_users` | `$.total_engaged_users` | `generate_sample_data.py` | `copilot_monthly_active_users` | Monthly Active Users, Agent vs Chat MAU | **Gap** — needs rolling 28d aggregation + push |
-| `copilot_ide_code_completions.editors[].models[].total_code_suggestions` | Nested per editor/model | `generate_sample_data.py` | `copilot_feature_usage{feature="completions"}` | Feature Adoption Breakdown | **Gap** — no push script |
-| `copilot_ide_code_completions.editors[].models[].total_code_acceptances` | Nested per editor/model | `generate_sample_data.py` | (used to compute `copilot_survival_rate`) | Suggestion Survival Rate | **Gap** — no push script |
-| `copilot_ide_code_completions.editors[].models[].loc_suggested_to_add_sum` | Nested per editor/model | `generate_sample_data.py` | `copilot_loc_suggested` | LoC Suggested vs Added | **Gap** — no push script |
-| `copilot_ide_code_completions.editors[].models[].loc_added_sum` | Nested per editor/model | `generate_sample_data.py` | `copilot_loc_added` | LoC Suggested vs Added | **Gap** — no push script |
-| `copilot_ide_chat.editors[].models[].total_chats` | Nested per editor/model | `generate_sample_data.py` | `copilot_feature_usage{feature="chat_*"}` | Feature Adoption Breakdown | **Gap** — no push script |
+| `total_active_users` | `$.total_active_users` | `generate_sample_data.py` | `copilot_daily_active_users` | DAU Over Time, Daily Active Users | **Active** — `push_usage_metrics.py` |
+| `total_engaged_users` | `$.total_engaged_users` | `generate_sample_data.py` | `copilot_monthly_active_users` | Monthly Active Users, Agent vs Chat MAU | **Active** — `push_usage_metrics.py` |
+| `copilot_ide_code_completions.editors[].models[].total_code_suggestions` | Nested per editor/model | `generate_sample_data.py` | `copilot_feature_usage{feature="completions"}` | Feature Adoption Breakdown | **Active** — `push_usage_metrics.py` |
+| `copilot_ide_code_completions.editors[].models[].total_code_acceptances` | Nested per editor/model | `generate_sample_data.py` | (used to compute `copilot_survival_rate`) | Suggestion Survival Rate | **Active** — `push_usage_metrics.py` |
+| `copilot_ide_code_completions.editors[].models[].loc_suggested_to_add_sum` | Nested per editor/model | `generate_sample_data.py` | `copilot_loc_suggested` | LoC Suggested vs Added | **Active** — `push_usage_metrics.py` |
+| `copilot_ide_code_completions.editors[].models[].loc_added_sum` | Nested per editor/model | `generate_sample_data.py` | `copilot_loc_added` | LoC Suggested vs Added | **Active** — `push_usage_metrics.py` |
+| `copilot_ide_chat.editors[].models[].total_chats` | Nested per editor/model | `generate_sample_data.py` | `copilot_feature_usage{feature="chat_*"}` | Feature Adoption Breakdown | **Active** — `push_usage_metrics.py` |
 | `copilot_pull_requests.repositories[].models[].total_pr_merged_count` | Nested per repo/model | `generate_sample_data.py` | `copilot_pr_merged_total` | PR Throughput, Copilot PR Share | **Active** — `push_pr_metrics.py` |
 | `copilot_pull_requests.repositories[].models[].total_copilot_pr_merged_count` | Nested per repo/model | `generate_sample_data.py` | `copilot_pr_merged_copilot` | PR Throughput, Copilot PR Share | **Active** — `push_pr_metrics.py` |
 | `copilot_pull_requests.repositories[].models[].median_minutes_to_merge` | Nested per repo/model | `generate_sample_data.py` | `copilot_pr_median_merge_minutes{type="all"}` | Median Merge Time (DORA) | **Active** — `push_pr_metrics.py` |
 | `copilot_pull_requests.repositories[].models[].median_minutes_to_merge_for_copilot_prs` | Nested per repo/model | `generate_sample_data.py` | `copilot_pr_median_merge_minutes{type="copilot"}` | Median Merge Time (DORA), Merge Time Delta | **Active** — `push_pr_metrics.py` |
-| `copilot_pull_requests.repositories[].models[].total_code_review_copilot_suggestions_count` | Nested per repo/model | `generate_sample_data.py` | `copilot_ccr_suggestions_generated` | Code Review (CCR) Metrics | **Gap** — no push script |
-| `copilot_pull_requests.repositories[].models[].total_code_review_copilot_suggestions_applied_count` | Nested per repo/model | `generate_sample_data.py` | `copilot_ccr_suggestions_applied` | Code Review (CCR) Metrics | **Gap** — no push script |
+| `copilot_pull_requests.repositories[].models[].total_code_review_copilot_suggestions_count` | Nested per repo/model | `generate_sample_data.py` | `copilot_ccr_suggestions_generated` | Code Review (CCR) Metrics | **Active** — `push_usage_metrics.py` |
+| `copilot_pull_requests.repositories[].models[].total_code_review_copilot_suggestions_applied_count` | Nested per repo/model | `generate_sample_data.py` | `copilot_ccr_suggestions_applied` | Code Review (CCR) Metrics | **Active** — `push_usage_metrics.py` |
 
 ### CLI-Specific Usage Metrics API Fields
 
@@ -51,8 +55,8 @@ For full field definitions, see the skill references linked in each section.
 
 | API Field | NDJSON Location | Seeder | Prometheus Metric | Grafana Panel | Status |
 |-----------|----------------|--------|-------------------|---------------|--------|
-| `copilot_cli.total_engaged_users` | `$.copilot_cli.total_engaged_users` | `generate_sample_data.py` | `copilot_daily_active_users{surface="cli"}` | DAU Over Time (CLI series) | **Gap** — NDJSON generated, no push script |
-| `copilot_cli.models[].total_cli_sessions` | Nested per model | `generate_sample_data.py` | `copilot_feature_usage{feature="cli"}` | Feature Adoption Breakdown | **Gap** — no push script |
+| `copilot_cli.total_engaged_users` | `$.copilot_cli.total_engaged_users` | `generate_sample_data.py` | `copilot_daily_active_users{surface="cli"}` | DAU Over Time (CLI series) | **Active** — `push_usage_metrics.py` |
+| `copilot_cli.models[].total_cli_sessions` | Nested per model | `generate_sample_data.py` | `copilot_feature_usage{feature="cli"}` | Feature Adoption Breakdown | **Active** — `push_usage_metrics.py` |
 | `copilot_cli.models[].total_cli_requests` | Nested per model | `generate_sample_data.py` | — | — | NDJSON only, no panel |
 | `copilot_cli.models[].total_cli_prompts` | Nested per model | `generate_sample_data.py` | — | — | NDJSON only, no panel |
 | `copilot_cli.models[].total_cli_tokens_sent` | Nested per model | `generate_sample_data.py` | — | — | NDJSON only, no panel |
@@ -110,26 +114,24 @@ Key span attributes seeded: `gen_ai.usage.input_tokens`, `gen_ai.usage.output_to
 
 ---
 
-## 3. CLI OTel Signals (Planned)
+## 3. CLI OTel Signals
 
 **Official source**: https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference#opentelemetry-monitoring
 **Full CLI OTel reference**: [`.github/skills/copilot-cli-metrics/SKILL.md`](../../.github/skills/copilot-cli-metrics/SKILL.md) (§ CLI OpenTelemetry Monitoring)
 
-### New Signals Not Available from IDE OTel
+### CLI-Unique OTel Metrics (seeded by `seed-cli-data.ts`)
 
-These are unique to CLI OTel and will be seeded by `seed-cli-data.ts`:
-
-| OTel Signal | Type | Prometheus Name (expected) | Planned Grafana Panel | Source Attribute |
-|-------------|------|---------------------------|----------------------|-----------------|
-| `github.copilot.cost` | Span attribute | Needs custom metric extraction | Cost KPI (Executive row) | `invoke_agent` + `chat` spans |
-| `github.copilot.aiu` | Span attribute | Needs custom metric extraction | (planned) | `invoke_agent` + `chat` spans |
-| `gen_ai.usage.cache_read.input_tokens` | Span attribute | Needs custom metric extraction | (planned — cache efficiency) | `invoke_agent` + `chat` spans |
-| `gen_ai.usage.cache_creation.input_tokens` | Span attribute | Needs custom metric extraction | (planned — cache efficiency) | `invoke_agent` + `chat` spans |
-| `session.shutdown` → `lines_added` | Span event attribute | Needs custom metric extraction | (planned — CLI LoC impact) | `invoke_agent` span event |
-| `session.shutdown` → `lines_removed` | Span event attribute | Needs custom metric extraction | (planned — CLI LoC impact) | `invoke_agent` span event |
-| `session.shutdown` → `total_premium_requests` | Span event attribute | Needs custom metric extraction | (planned) | `invoke_agent` span event |
-| `session.shutdown` → `files_modified_count` | Span event attribute | Needs custom metric extraction | (planned) | `invoke_agent` span event |
-| `gen_ai.client.operation.time_per_output_chunk` | Histogram | `gen_ai_client_operation_time_per_output_chunk_bucket` | (planned — streaming quality) | Metric |
+| OTel Metric | Type | Prometheus Name | ROI Dashboard Panel | Status |
+|-------------|------|-----------------|---------------------|--------|
+| `github.copilot.cost` | Histogram | `github_copilot_cost_sum` | Total Cost (7d), Cost per Session, Cost per LoC, Cost Over Time, Cost by Model, Cost by Team, Cost per Session Trend | **Active** |
+| `github.copilot.aiu` | Histogram | `github_copilot_aiu_sum` | AI Units (7d), AI Units by Model | **Active** |
+| `github.copilot.cache_read_tokens` | Histogram | `github_copilot_cache_read_tokens_sum` | Cache Hit Ratio, Cache Hit Ratio Over Time, Token Cache Breakdown | **Active** |
+| `github.copilot.cache_creation_tokens` | Histogram | `github_copilot_cache_creation_tokens_sum` | Cache Hit Ratio, Token Cache Breakdown | **Active** |
+| `github.copilot.session.lines_added` | Histogram | `github_copilot_session_lines_added_sum` | Lines Added (CLI, 7d), CLI Lines Added Over Time, Cost per LoC, LoC per Session | **Active** |
+| `github.copilot.session.lines_removed` | Histogram | `github_copilot_session_lines_removed_sum` | Lines Removed (CLI, 7d), CLI Lines Added Over Time | **Active** |
+| `github.copilot.session.files_modified` | Histogram | `github_copilot_session_files_modified_sum` | Files Modified (CLI, 7d) | **Active** |
+| `github.copilot.session.premium_requests` | Histogram | `github_copilot_session_premium_requests_sum` | Premium Requests (7d), Premium Requests Over Time | **Active** |
+| `gen_ai.client.operation.time_per_output_chunk` | Histogram | `gen_ai_client_operation_time_per_output_chunk_bucket` | (available, no dedicated panel) | **Active** |
 
 ### Shared Signals (Same as IDE, Different service.name)
 
@@ -180,19 +182,19 @@ These use the same OTel metric names as IDE but are distinguishable by `service_
 
 | Panel | PromQL | Data Source | Seeder | Official API Field | Status |
 |-------|--------|-------------|--------|-------------------|--------|
-| DAU Over Time (IDE) | `sum(max_over_time(copilot_daily_active_users{surface="ide"}[26h]))` | Pushgateway | — | `total_active_users` (minus CLI) | **Gap** |
-| DAU Over Time (CLI) | `sum(max_over_time(copilot_daily_active_users{surface="cli"}[26h]))` | Pushgateway | — | `daily_active_cli_users` | **Gap** |
-| Feature Adoption | `sum(copilot_feature_usage{feature="..."})` | Pushgateway | — | Various `total_engaged_users` per feature | **Gap** |
+| DAU Over Time (IDE) | `sum(max_over_time(copilot_daily_active_users{surface="ide"}[26h]))` | Pushgateway | `push_usage_metrics.py` | `total_active_users` (minus CLI) | **Active** |
+| DAU Over Time (CLI) | `sum(max_over_time(copilot_daily_active_users{surface="cli"}[26h]))` | Pushgateway | `push_usage_metrics.py` | `daily_active_cli_users` | **Active** |
+| Feature Adoption | `sum(copilot_feature_usage{feature="..."})` | Pushgateway | `push_usage_metrics.py` | Various `total_engaged_users` per feature | **Active** |
 
 ### Code Generation & Outcomes Row
 
 | Panel | PromQL | Data Source | Seeder | Official API Field | Status |
 |-------|--------|-------------|--------|-------------------|--------|
-| LoC Suggested vs Added | `sum(max_over_time(copilot_loc_suggested[26h]))` / `copilot_loc_added` | Pushgateway | — | `loc_suggested_to_add_sum` / `loc_added_sum` | **Gap** |
-| Suggestion Survival Rate Trend | `sum(copilot_survival_rate)` | Pushgateway | — | Computed ratio | **Gap** |
+| LoC Suggested vs Added | `sum(max_over_time(copilot_loc_suggested[26h]))` / `copilot_loc_added` | Pushgateway | `push_usage_metrics.py` | `loc_suggested_to_add_sum` / `loc_added_sum` | **Active** |
+| Suggestion Survival Rate Trend | `sum(copilot_survival_rate)` | Pushgateway | `push_usage_metrics.py` | Computed ratio | **Active** |
 | PR Throughput | `sum(copilot_pr_merged_total)` / `sum(copilot_pr_merged_copilot)` | Pushgateway | `push_pr_metrics.py` | `total_pr_merged_count` / `total_copilot_pr_merged_count` | **Active** |
 | Median Merge Time | `sum(copilot_pr_median_merge_minutes{type="all"/"copilot"})` | Pushgateway | `push_pr_metrics.py` | `median_minutes_to_merge` / `median_minutes_to_merge_for_copilot_prs` | **Active** |
-| Code Review (CCR) | `sum(copilot_ccr_suggestions_generated/applied/trigger_rate)` | Pushgateway | — | `total_code_review_copilot_suggestions_count/applied` | **Gap** |
+| Code Review (CCR) | `sum(copilot_ccr_suggestions_generated/applied/trigger_rate)` | Pushgateway | `push_usage_metrics.py` | `total_code_review_copilot_suggestions_count/applied` | **Active** |
 
 ### Agent Observability (OTel) Row
 
@@ -213,27 +215,67 @@ These use the same OTel metric names as IDE but are distinguishable by `service_
 | Token Consumption by Team | `sum by (contoso_team) (increase(gen_ai_client_token_usage_sum[5m]))` | OTel → Prometheus | `seed-data.ts` | `gen_ai.client.token.usage` | **Active** |
 | Adoption Trend | `sum(increase(copilot_chat_session_count_total[1h]))` | OTel → Prometheus | `seed-data.ts` | `copilot_chat.session.count` | **Active** |
 
+### ROI & Cost Efficiency Dashboard (separate)
+
+#### Cost KPIs Row
+
+| Panel | PromQL | Data Source | Seeder | OTel Metric | Status |
+|-------|--------|-------------|--------|-------------|--------|
+| Total Cost (7d) | `sum(increase(github_copilot_cost_sum[7d]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.cost` | **Active** |
+| Cost per Session | `sum(increase(github_copilot_cost_sum[7d])) / clamp_min(sum(increase(github_copilot_cost_count[7d])), 1)` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.cost` | **Active** |
+| Cost per LoC | `sum(increase(github_copilot_cost_sum[7d])) / clamp_min(sum(increase(github_copilot_session_lines_added_sum[7d])), 1)` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.cost` + `github.copilot.session.lines_added` | **Active** |
+| AI Units (7d) | `sum(increase(github_copilot_aiu_sum[7d]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.aiu` | **Active** |
+| Premium Requests (7d) | `sum(increase(github_copilot_session_premium_requests_sum[7d]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.session.premium_requests` | **Active** |
+| Cache Hit Ratio | `cache_read / (cache_read + cache_creation + fresh_input)` | OTel → Prometheus | `seed-cli-data.ts` | Cache token metrics | **Active** |
+
+#### Cost Trends Row
+
+| Panel | PromQL | Data Source | Seeder | OTel Metric | Status |
+|-------|--------|-------------|--------|-------------|--------|
+| Cost Over Time | `sum(increase(github_copilot_cost_sum[1h]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.cost` | **Active** |
+| Cost by Model | `sum by (gen_ai_request_model) (increase(github_copilot_cost_sum[1h]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.cost` | **Active** |
+| Cost by Team | `sum by (contoso_team) (increase(github_copilot_cost_sum[1h]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.cost` | **Active** |
+| AI Units by Model | `sum by (gen_ai_request_model) (increase(github_copilot_aiu_sum[1h]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.aiu` | **Active** |
+
+#### Cache & Efficiency Row
+
+| Panel | PromQL | Data Source | Seeder | OTel Metric | Status |
+|-------|--------|-------------|--------|-------------|--------|
+| Cache Hit Ratio Over Time | `cache_read / (cache_read + cache_creation + fresh_input)` | OTel → Prometheus | `seed-cli-data.ts` | Cache token metrics | **Active** |
+| Premium Requests Over Time | `sum(increase(github_copilot_session_premium_requests_sum[1h]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.session.premium_requests` | **Active** |
+| Token Cache Breakdown | Cache read / creation / fresh input stacked | OTel → Prometheus | `seed-cli-data.ts` | Cache token metrics | **Active** |
+| Cost per Session Trend | `sum(increase(cost_sum[1h])) / clamp_min(sum(increase(cost_count[1h])), 1)` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.cost` | **Active** |
+
+#### Productivity Impact Row
+
+| Panel | PromQL | Data Source | Seeder | OTel/API Metric | Status |
+|-------|--------|-------------|--------|-----------------|--------|
+| Lines Added (CLI, 7d) | `sum(increase(github_copilot_session_lines_added_sum[7d]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.session.lines_added` | **Active** |
+| Lines Removed (CLI, 7d) | `sum(increase(github_copilot_session_lines_removed_sum[7d]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.session.lines_removed` | **Active** |
+| Files Modified (CLI, 7d) | `sum(increase(github_copilot_session_files_modified_sum[7d]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.session.files_modified` | **Active** |
+| LoC per Session | `lines_added / sessions` | OTel → Prometheus | `seed-cli-data.ts` | Computed | **Active** |
+| Copilot PR Share | `sum(copilot_pr_merged_copilot) / sum(copilot_pr_merged_total)` | Pushgateway | `push_pr_metrics.py` | Usage Metrics API | **Active** |
+| Merge Time Δ | `copilot_ttm - all_ttm` | Pushgateway | `push_pr_metrics.py` | Usage Metrics API | **Active** |
+| CLI Lines Added Over Time | Lines added/removed timeseries | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.session.lines_*` | **Active** |
+| CLI Tool Distribution | `sum by (gen_ai_tool_name) (increase(github_copilot_tool_call_count_total{service_name="github-copilot"}[1h]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.tool.call.count` | **Active** |
+
 ---
 
-## 5. Gap Summary
+## 5. Status Summary
 
-### Active (data flows end-to-end)
-- All Agent Observability panels (OTel → Collector → Prometheus → Grafana)
-- All Team Analytics panels (same pipeline)
-- PR metrics: Throughput, Merge Time, PR Share (NDJSON → `push_pr_metrics.py` → Pushgateway → Prometheus → Grafana)
+### All Active
+- **Unified Dashboard**: All 29 panels have data flowing end-to-end
+  - NDJSON → `push_pr_metrics.py` + `push_usage_metrics.py` → Pushgateway → Prometheus → Grafana
+  - IDE OTel → `seed-data.ts` → OTel Collector → Prometheus → Grafana
+- **ROI Dashboard**: All 20 panels have data flowing end-to-end
+  - CLI OTel → `seed-cli-data.ts` → OTel Collector → Prometheus → Grafana
+  - Plus cross-referenced PR metrics from Pushgateway
 
-### Gaps (NDJSON generated, no push to Prometheus)
-Needs a `push_usage_metrics.py` script (analog to `push_pr_metrics.py`) to extract from NDJSON and push:
-- `copilot_monthly_active_users` / `copilot_daily_active_users` / `copilot_monthly_active_agent_users`
-- `copilot_feature_usage{feature="completions|chat_ask|chat_edit|chat_agent|cli"}`
-- `copilot_loc_suggested` / `copilot_loc_added`
-- `copilot_survival_rate`
-- `copilot_ccr_suggestions_generated` / `copilot_ccr_suggestions_applied` / `copilot_ccr_trigger_rate`
-
-### Planned (CLI OTel integration)
-- `seed-cli-data.ts` → CLI-shaped OTel signals with `service.name: github-copilot`
-- Cost KPI panel, cache efficiency panel, premium request tracking
-- CLI tool names in Tool Calls panel
+### Remaining Limitations
+- NDJSON-derived metrics are point-in-time snapshots (latest day), not full 28-day time series
+- `copilot_monthly_active_users` is approximated from max engaged across available days
+- `copilot_monthly_active_agent_users` is estimated as 40% of chat users (no per-user `used_agent` flag in NDJSON)
+- CLI OTel cost data is available only from CLI sessions — IDE sessions do not emit cost
 
 ---
 
