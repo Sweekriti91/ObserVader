@@ -55,7 +55,7 @@ For field-level provenance (metric → official source → seeder → panel), se
 | **Token Usage Rate** | `rate(gen_ai.client.token.usage)` by input/output | IDE + CLI OTel |
 | **Tool Call Distribution** | `copilot_chat.tool.call.count` grouped by tool name | IDE + CLI OTel |
 
-### Cost & Efficiency (CLI OTel — new)
+### Cost & Efficiency (CLI OTel)
 
 | KPI | Formula | Data Source |
 |-----|---------|-------------|

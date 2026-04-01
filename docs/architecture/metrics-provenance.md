@@ -169,14 +169,13 @@ These use the same OTel metric names as IDE but are distinguishable by `service_
 
 | Panel | PromQL | Data Source | Seeder | Official API Field | Status |
 |-------|--------|-------------|--------|-------------------|--------|
-| Monthly Active Users | `sum(max_over_time(copilot_monthly_active_users[26h]))` | Pushgateway | — | `total_engaged_users` (28d rolling) | **Gap** — no push script |
-| Daily Active Users | `sum(max_over_time(copilot_daily_active_users[26h]))` | Pushgateway | — | `total_active_users` | **Gap** — no push script |
-| Suggestion Survival Rate | `sum(max_over_time(copilot_survival_rate[26h]))` | Pushgateway | — | `total_code_acceptances / total_code_suggestions` | **Gap** — no push script |
+| Monthly Active Users | `sum(max_over_time(copilot_monthly_active_users[26h]))` | Pushgateway | `push_usage_metrics.py` | `total_engaged_users` (28d rolling) | **Active** |
+| Daily Active Users | `sum(max_over_time(copilot_daily_active_users[26h]))` | Pushgateway | `push_usage_metrics.py` | `total_active_users` | **Active** |
+| Suggestion Survival Rate | `sum(max_over_time(copilot_survival_rate[26h]))` | Pushgateway | `push_usage_metrics.py` | `total_code_acceptances / total_code_suggestions` | **Active** |
 | Copilot PR Share | `sum(copilot_pr_merged_copilot) / clamp_min(sum(copilot_pr_merged_total), 1)` | Pushgateway | `push_pr_metrics.py` | `total_copilot_pr_merged_count / total_pr_merged_count` | **Active** |
 | Merge Time Delta | `sum(copilot_pr_median_merge_minutes{type="copilot"}) - sum(copilot_pr_median_merge_minutes{type="all"})` | Pushgateway | `push_pr_metrics.py` | `median_minutes_to_merge_for_copilot_prs - median_minutes_to_merge` | **Active** |
 | Agent Sessions (OTel) | `sum(increase(copilot_chat_session_count_total[24h]))` | OTel → Prometheus | `seed-data.ts` | `copilot_chat.session.count` | **Active** |
-| Agent MAU | `sum(max_over_time(copilot_monthly_active_agent_users[26h]))` | Pushgateway | — | (derived from user-level `used_agent` flags) | **Gap** — no push script |
-| Cost KPI | (planned) | OTel → Prometheus | `seed-cli-data.ts` (planned) | `github.copilot.cost` | **Planned** |
+| Agent MAU | `sum(max_over_time(copilot_monthly_active_agent_users[26h]))` | Pushgateway | `push_usage_metrics.py` | (derived from user-level `used_agent` flags) | **Active** |
 
 ### Adoption & Usage Trends Row
 
