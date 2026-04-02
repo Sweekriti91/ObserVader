@@ -1,24 +1,37 @@
 # ObserVader
 
-A practical GitHub Copilot observability demo that combines usage metrics with OpenTelemetry signals.
+Turn raw Copilot telemetry into executive-ready KPIs, cost analysis, and agent traces — see exactly where your AI coding investment is paying off, and where it isn't.
 
 > This is a seeded reference demo for local reproducibility — not a production deployment target.
 > Live enterprise adapters and secret-backed integrations belong in private forks.
 
-## What it does
+## Three Problems This Solves
 
-ObserVader provides a runnable local stack for:
-- **Usage & adoption metrics** — visualize Copilot completions, chat, PR summaries, and seat activity
-- **Agent observability** — trace latency, token usage, and tool activity via OpenTelemetry
-- **Dashboard-driven gap analysis** — identify adoption gaps across teams and editors
+1. **"Are developers actually using Copilot?"** — Adoption dashboards track DAU/MAU, feature breakdown, and team-level engagement
+2. **"Is the AI-generated code surviving?"** — Survival rate, LoC metrics, and PR lifecycle panels show real code impact
+3. **"What's the agent actually doing?"** — OTel traces and latency breakdown across Claude, GPT, and Gemini models
 
-## Dashboard Screenshots
+> **Multi-model visibility**: see cost and latency across Claude, GPT, and Gemini models side-by-side in a single dashboard.
 
-![Grafana Dashboard 1](docs/screenshots/Grafana1.jpg)
-![Grafana Dashboard 2](docs/screenshots/Grafana2.jpg)
-![Grafana Dashboard 3](docs/screenshots/Grafana3.jpg)
-![Grafana Dashboard 4](docs/screenshots/Grafana4.jpg)
-![Grafana Dashboard 5](docs/screenshots/Grafana5.jpg)
+## What You'll See
+
+![Executive KPIs — MAU, DAU, Survival Rate, PR Share, Merge Delta](docs/screenshots/Grafana1.jpg)
+*Executive KPIs give leadership a single-glance health check on Copilot ROI.*
+
+![Code Generation — LoC Suggested vs Added, PR Throughput, DORA Lead Time](docs/screenshots/Grafana2.jpg)
+*Code Generation panels track whether AI-suggested code actually survives to production.*
+
+![Code Review & Agent OTel — Token Usage Rate and Model Breakdown](docs/screenshots/Grafana3.jpg)
+*Code Review metrics and Agent Observability show token consumption across models in real time.*
+
+![Agent Performance — Duration Percentiles, TTFT, LLM Latency, Tool Calls](docs/screenshots/Grafana4.jpg)
+*Agent Performance panels surface p50/p95 latency, Time to First Token, and tool call distribution.*
+
+![Team Analytics — Sessions by Team, Token Consumption, Adoption Trend](docs/screenshots/Grafana5.jpg)
+*Team Analytics break down sessions and token spend by department for cost allocation.*
+
+![Jaeger Trace — invoke_agent → chat → execute_tool span tree](docs/screenshots/Jaegar1.jpg)
+*Jaeger trace waterfall shows the full agent interaction: LLM calls, tool executions, and latency breakdown.*
 
 ## Architecture
 
@@ -49,6 +62,17 @@ Then open:
 
 For endpoint realism details and protocol-shape mapping, see [docs/runbook/public-demo-quickstart.md](docs/runbook/public-demo-quickstart.md).
 
+## KPI Reference
+
+For a complete breakdown of every metric, formula, and data source — including ROI math and signal coverage — see the [Copilot Metrics & ROI Playbook](docs/architecture/copilot-metrics-playbook.md).
+
+Highlights:
+- **Adoption**: DAU/MAU, CLI adoption rate, agent adoption %, feature breakdown
+- **Code Impact**: Suggestion survival rate, LoC added, agent contribution %
+- **PR Lifecycle**: Copilot PR share, merge time delta, code review apply rate
+- **Agent Observability**: Duration percentiles, TTFT, token usage, tool call distribution
+- **Cost & Efficiency**: Cost per session, AI units, cache hit ratio, context pressure
+
 ## Repository Layout
 
 ```
@@ -66,7 +90,4 @@ docs/screenshots/      Dashboard screenshots
 
 ## Credits
 
-Inspired by [copilot-opentelemetry](https://github.com/pierceboggan/copilot-opentelemetry)
-
-Inspired by practical Copilot observability workflows including:
-https://github.com/pierceboggan/copilot-opentelemetry
+Inspired by [copilot-opentelemetry](https://github.com/pierceboggan/copilot-opentelemetry) and practical Copilot observability workflows.

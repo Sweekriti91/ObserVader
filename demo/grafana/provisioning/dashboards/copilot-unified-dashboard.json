@@ -177,7 +177,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(max_over_time(copilot_survival_rate[26h]))",
+          "expr": "max_over_time(copilot_survival_rate[26h])",
           "legendFormat": "Survival Rate",
           "instant": true,
           "range": false
@@ -838,7 +838,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(copilot_survival_rate)",
+          "expr": "copilot_survival_rate",
           "legendFormat": "Survival Rate",
           "instant": false,
           "range": true
