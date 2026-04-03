@@ -104,7 +104,8 @@
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(max_over_time(copilot_monthly_active_users[26h]))\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 3,
@@ -159,7 +160,8 @@
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(max_over_time(copilot_daily_active_users[26h]))\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 4,
@@ -215,7 +217,8 @@
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- max_over_time(copilot_survival_rate[26h])\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 5,
@@ -271,7 +274,8 @@
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(copilot_pr_merged_copilot) / clamp_min(sum(copilot_pr_merged_total), 1)\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 6,
@@ -328,7 +332,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "description": "Copilot-authored PR median merge time minus overall median (minutes)"
+      "description": "Formula (PromQL):\n- sum(copilot_pr_median_merge_minutes{type=\"copilot\"}) - sum(copilot_pr_median_merge_minutes{type=\"all\"})\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Negative values are better (Copilot path is faster than baseline); positive values are worse.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 7,
@@ -383,7 +387,8 @@
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(copilot_chat_session_count_total[24h]))\n\nData provenance: Copilot Chat OpenTelemetry metrics (service.name=copilot-chat) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 11,
@@ -472,7 +477,7 @@
           "calcs": []
         }
       },
-      "description": "28-day trend of monthly active users in chat vs agent modes"
+      "description": "Formula (PromQL):\n- sum(max_over_time(copilot_monthly_active_agent_users[26h]))\n- sum(max_over_time(copilot_monthly_active_users[26h]))\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 12,
@@ -545,7 +550,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "description": "Monthly active users in agent/edit mode (KPI)"
+      "description": "Formula (PromQL):\n- sum(max_over_time(copilot_monthly_active_agent_users[26h]))\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 8,
@@ -634,7 +639,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(max_over_time(copilot_daily_active_users{surface=\"ide\"}[26h]))\n- sum(max_over_time(copilot_daily_active_users{surface=\"cli\"}[26h]))\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 10,
@@ -731,7 +737,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(copilot_feature_usage{feature=\"completions\"})\n- sum(copilot_feature_usage{feature=\"chat_ask\"})\n- sum(copilot_feature_usage{feature=\"chat_edit\"})\n- sum(copilot_feature_usage{feature=\"chat_agent\"})\n- sum(copilot_feature_usage{feature=\"cli\"})\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 13,
@@ -820,7 +827,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(max_over_time(copilot_loc_suggested[26h]))\n- sum(max_over_time(copilot_loc_added[26h]))\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 15,
@@ -901,7 +909,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- copilot_survival_rate\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 16,
@@ -977,7 +986,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(copilot_pr_merged_total)\n- sum(copilot_pr_merged_copilot)\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 17,
@@ -1054,7 +1064,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(copilot_pr_median_merge_minutes{type=\"all\"})\n- sum(copilot_pr_median_merge_minutes{type=\"copilot\"})\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Negative values are better (Copilot path is faster than baseline); positive values are worse.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 18,
@@ -1162,7 +1173,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(copilot_ccr_suggestions_generated)\n- sum(copilot_ccr_suggestions_applied)\n- sum(copilot_ccr_trigger_rate)\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 19,
@@ -1251,7 +1263,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(rate(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\"}[5m])) or vector(0)\n- sum(rate(gen_ai_client_token_usage_sum{gen_ai_token_type=\"output\"}[5m])) or vector(0)\n\nData provenance: OpenTelemetry GenAI metrics (IDE + CLI where applicable) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 21,
@@ -1327,7 +1340,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum by (gen_ai_request_model) (increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\"}[5m]))\n- sum by (gen_ai_request_model) (increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"output\"}[5m]))\n\nData provenance: OpenTelemetry GenAI metrics (IDE + CLI where applicable) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Use this to understand demand and model mix; increasing output with stable input often indicates better efficiency.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 22,
@@ -1411,7 +1425,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- histogram_quantile(0.50, sum(rate(copilot_chat_agent_invocation_duration_bucket[5m])) by (le))\n- histogram_quantile(0.95, sum(rate(copilot_chat_agent_invocation_duration_bucket[5m])) by (le))\n- histogram_quantile(0.99, sum(rate(copilot_chat_agent_invocation_duration_bucket[5m])) by (le))\n\nData provenance: Copilot Chat OpenTelemetry metrics (service.name=copilot-chat) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 23,
@@ -1488,7 +1503,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- histogram_quantile(0.50, sum(rate(gen_ai_client_operation_duration_bucket[5m])) by (le, gen_ai_request_model))\n- histogram_quantile(0.95, sum(rate(gen_ai_client_operation_duration_bucket[5m])) by (le, gen_ai_request_model))\n\nData provenance: OpenTelemetry GenAI metrics (IDE + CLI where applicable) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 24,
@@ -1565,7 +1581,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- histogram_quantile(0.50, sum(rate(copilot_chat_time_to_first_token_bucket[5m])) by (le))\n- histogram_quantile(0.95, sum(rate(copilot_chat_time_to_first_token_bucket[5m])) by (le))\n\nData provenance: Copilot Chat OpenTelemetry metrics (service.name=copilot-chat) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Lower values are better because they indicate faster model/agent response time.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 25,
@@ -1634,7 +1651,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum by (copilot_chat_tool_name) (increase(copilot_chat_tool_call_count_total[5m]))\n\nData provenance: Copilot Chat OpenTelemetry metrics (service.name=copilot-chat) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 26,
@@ -1716,7 +1734,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum by (contoso_team) (increase(copilot_chat_session_count_total[5m]))\n\nData provenance: Copilot Chat OpenTelemetry metrics (service.name=copilot-chat) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 28,
@@ -1785,7 +1804,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum by (contoso_team) (increase(gen_ai_client_token_usage_sum[5m]))\n\nData provenance: OpenTelemetry GenAI metrics (IDE + CLI where applicable) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Use this to understand demand and model mix; increasing output with stable input often indicates better efficiency.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 29,
@@ -1854,7 +1874,8 @@
           "placement": "bottom",
           "calcs": []
         }
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(copilot_chat_session_count_total[1h]))\n\nData provenance: Copilot Chat OpenTelemetry metrics (service.name=copilot-chat) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     }
   ],
   "templating": {
