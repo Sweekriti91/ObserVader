@@ -548,6 +548,62 @@
       "description": "Monthly active users in agent/edit mode (KPI)"
     },
     {
+      "id": 30,
+      "type": "stat",
+      "title": "Cloud Agent MAU",
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "targets": [
+        {
+          "expr": "sum(max_over_time(copilot_monthly_active_cloud_agent_users[26h]))",
+          "legendFormat": "Cloud Agent MAU",
+          "refId": "A",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "graphMode": "area",
+        "colorMode": "value",
+        "justifyMode": "auto",
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "description": "Monthly active users of Copilot cloud agent (coding agent)"
+    },
+    {
       "id": 8,
       "type": "row",
       "title": "\ud83d\udcc8 Adoption & Usage Trends",
@@ -930,6 +986,13 @@
           "legendFormat": "Copilot PRs Merged",
           "instant": false,
           "range": true
+        },
+        {
+          "refId": "C",
+          "expr": "sum(copilot_pr_merged_copilot_reviewed)",
+          "legendFormat": "Copilot-Reviewed PRs Merged",
+          "instant": false,
+          "range": true
         }
       ],
       "fieldConfig": {
@@ -1004,6 +1067,13 @@
           "refId": "B",
           "expr": "sum(copilot_pr_median_merge_minutes{type=\"copilot\"})",
           "legendFormat": "Copilot PRs",
+          "instant": false,
+          "range": true
+        },
+        {
+          "refId": "C",
+          "expr": "sum(copilot_pr_median_merge_minutes{type=\"copilot_reviewed\"})",
+          "legendFormat": "Copilot-Reviewed PRs",
           "instant": false,
           "range": true
         }

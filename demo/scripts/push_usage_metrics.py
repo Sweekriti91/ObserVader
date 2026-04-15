@@ -7,6 +7,7 @@ The Grafana dashboard expects these metrics:
   - copilot_daily_active_users{surface="ide|cli"}
   - copilot_monthly_active_users
   - copilot_monthly_active_agent_users
+  - copilot_monthly_active_cloud_agent_users
   - copilot_feature_usage{feature="completions|chat_ask|chat_edit|chat_agent|cli"}
   - copilot_loc_suggested
   - copilot_loc_added
@@ -92,6 +93,15 @@ def main():
     chat_users = chat_section.get("total_engaged_users", 0)
     agent_users = int(chat_users * 0.40)
     g_agent_mau.set(agent_users)
+
+    # ── Monthly Active Cloud Agent Users (Apr 10 2026) ──
+    g_cloud_agent_mau = Gauge(
+        "copilot_monthly_active_cloud_agent_users",
+        "Monthly active Copilot cloud agent users",
+        registry=registry,
+    )
+    cloud_agent_mau = latest.get("monthly_active_copilot_cloud_agent_users", 0) or 0
+    g_cloud_agent_mau.set(cloud_agent_mau)
 
     # ── Feature Usage ──
     g_feature = Gauge(
@@ -188,6 +198,7 @@ def main():
     print(f"  copilot_daily_active_users{{surface=\"cli\"}}  = {cli_dau}")
     print(f"  copilot_monthly_active_users               = {max_engaged}")
     print(f"  copilot_monthly_active_agent_users          = {agent_users}")
+    print(f"  copilot_monthly_active_cloud_agent_users    = {cloud_agent_mau}")
     print(f"  copilot_feature_usage (5 features)          = pushed")
     print(f"  copilot_loc_suggested                       = {total_suggested}")
     print(f"  copilot_loc_added                           = {total_added}")

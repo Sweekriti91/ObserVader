@@ -87,21 +87,63 @@ def generate_day(d: date, day_idx: int) -> dict:
         cop_ttm = min(ttm - noise(30), noise(base_cop_ttm))
         rw = noise(ru * 0.7 * wf)
         rs = noise(rw * 3.0)
+        # Copilot-reviewed PR merge metrics (Apr 8 2026 changelog)
+        cop_reviewed_merged = noise(prm * random.uniform(0.30, 0.50))
+        cop_reviewed_ttm = min(ttm - noise(20), noise(base_cop_ttm * random.uniform(0.85, 1.05)))
         repos.append({"name": rname, "total_engaged_users": ru, "models": [{
             "name": "default", "is_custom_model": False, "total_engaged_users": ru,
             "total_pr_created_count": prc, "total_pr_merged_count": prm,
             "total_copilot_pr_created_count": cpc, "total_copilot_pr_merged_count": cpm,
             "median_minutes_to_merge": ttm,
             "median_minutes_to_merge_for_copilot_prs": cop_ttm,
+            "total_merged_reviewed_by_copilot": cop_reviewed_merged,
+            "median_minutes_to_merge_copilot_reviewed": cop_reviewed_ttm,
             "total_code_reviews_with_copilot_suggestions_count": rw,
             "total_code_review_copilot_suggestions_count": rs,
             "total_code_review_copilot_suggestions_applied_count": noise(rs * random.uniform(0.25, 0.35)),
         }]})
 
+    # Cloud agent active user counts (Apr 10 2026 changelog)
+    cloud_agent_dau = noise(lerp(8, 20, t) * wf)
+    cloud_agent_wau = noise(lerp(25, 55, t))
+    cloud_agent_mau = noise(lerp(40, 80, t))
+
+    # CLI contribution to top-level totals (Apr 10 2026 changelog)
+    cli_code_gen = noise(cli_req * 0.85)
+    cli_code_acc = noise(cli_code_gen * 0.40)
+    cli_interactions = noise(cli_req * 0.90)
+    cli_loc_add = noise(cli_req * 1.2)
+    cli_loc_del = noise(cli_req * 0.3)
+
+    # IDE-only top-level totals
+    ide_code_gen = sum(
+        m.get("total_code_suggestions", 0)
+        for e in editors for m in e.get("models", [{}])
+    )
+    ide_code_acc = sum(
+        m.get("total_code_acceptances", 0)
+        for e in editors for m in e.get("models", [{}])
+    )
+    ide_interactions = noise(chat_users * 5.0 * wf)
+    ide_loc_add = sum(
+        m.get("loc_added_sum", 0)
+        for e in editors for m in e.get("models", [{}])
+    )
+
     return {
         "date": d.isoformat(),
         "total_active_users": dau,
         "total_engaged_users": engaged,
+        # Top-level totals now include CLI (Apr 10 2026)
+        "code_generation_activity_count": ide_code_gen + cli_code_gen,
+        "code_acceptance_activity_count": ide_code_acc + cli_code_acc,
+        "user_initiated_interaction_count": ide_interactions + cli_interactions,
+        "loc_added_sum": ide_loc_add + cli_loc_add,
+        "loc_deleted_sum": cli_loc_del,
+        # Cloud agent active user counts (Apr 10 2026)
+        "daily_active_copilot_cloud_agent_users": cloud_agent_dau,
+        "weekly_active_copilot_cloud_agent_users": cloud_agent_wau,
+        "monthly_active_copilot_cloud_agent_users": cloud_agent_mau,
         "copilot_ide_code_completions": {
             "total_engaged_users": comp_users, "languages": languages, "editors": editors,
         },
@@ -112,6 +154,11 @@ def generate_day(d: date, day_idx: int) -> dict:
             "total_cli_prompts": noise(cli_req * 0.75),
             "total_cli_tokens_sent": cli_tok_s, "total_cli_tokens_received": noise(cli_tok_s * 0.50),
         }]},
+        # CLI in feature breakdowns (Apr 10 2026)
+        "totals_by_feature": {
+            "code_completion": {"code_generation_activity_count": ide_code_gen, "code_acceptance_activity_count": ide_code_acc},
+            "copilot_cli": {"code_generation_activity_count": cli_code_gen, "code_acceptance_activity_count": cli_code_acc},
+        },
         "copilot_pull_requests": {"total_engaged_users": pr_users, "repositories": repos},
     }
 
