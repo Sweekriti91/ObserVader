@@ -83,7 +83,7 @@ updates.
 1. **GitHub Copilot Metrics API**
    - REST reference: <https://docs.github.com/en/rest/copilot/copilot-metrics>
    - User Management API: <https://docs.github.com/en/rest/copilot/copilot-user-management>
-   - Concept docs: <https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-organization/view-metrics>
+   - Concept docs: <https://docs.github.com/en/copilot/how-tos/administer-copilot/view-usage-and-adoption>
 
 2. **OpenTelemetry GenAI semantic conventions**
    - Index: <https://opentelemetry.io/docs/specs/semconv/gen-ai/>

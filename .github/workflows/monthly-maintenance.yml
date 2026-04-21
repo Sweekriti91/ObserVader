@@ -52,6 +52,7 @@ jobs:
           args: >-
             --no-progress
             --exclude-path node_modules
+            --exclude-file .lycheeignore
             --accept 200,204,301,302,403,429
             --timeout 30
             --max-retries 3
