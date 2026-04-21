@@ -176,7 +176,7 @@ See: [Azure Monitor exporter](https://github.com/open-telemetry/opentelemetry-co
 
 Set auth: `export OTEL_EXPORTER_OTLP_HEADERS="Authorization=Basic <base64-creds>"`
 
-See: [Langfuse OTel docs](https://langfuse.com/docs/opentelemetry/introduction)
+See: [Langfuse OTel docs](https://langfuse.com/docs/opentelemetry/get-started)
 
 ### Other Compatible Backends
 - **Grafana Tempo** — `https://grafana.com/oss/tempo/`

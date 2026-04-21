@@ -1,0 +1,8 @@
+# lychee link-checker exclusion list
+#
+# Used by .github/workflows/monthly-maintenance.yml (link-check job).
+# Patterns are regular expressions matched against the full URL.
+
+# Local demo endpoints documented in README.md / docs/runbook/. They only
+# resolve when the user is running `docker compose up -d` from demo/.
+^http://localhost:\d+

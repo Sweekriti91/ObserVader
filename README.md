@@ -88,6 +88,22 @@ docs/screenshots/      Dashboard screenshots
 - Enterprise tokens, customer endpoints, and secret-backed adapters are excluded
 - Public Azure hosting is intentionally deferred; optional guidance for fork maintainers only
 
+## Continuous documentation
+
+A weekly [agentic workflow](.github/workflows/docs-sync.md) (powered by
+[GitHub Agentic Workflows](https://github.github.com/gh-aw/)) sweeps the
+Copilot Metrics API docs, OpenTelemetry GenAI semantic conventions, and
+the GitHub Copilot changelog, and opens a draft PR with proposed
+additive updates to `docs/` and `.github/skills/`. The agent runs in a
+sandboxed container with a read-only token and a domain-allowlisted
+firewall — every PR is gated by [`monthly-maintenance.yml`](.github/workflows/monthly-maintenance.yml)
+checks plus [CODEOWNERS](.github/CODEOWNERS) review before it can merge.
+Nothing auto-merges.
+
+> Optional: set the `GH_AW_CI_TRIGGER_TOKEN` repo secret (a fine-grained
+> PAT with `Contents: R/W`) so PRs created by the agent trigger CI
+> checks. See the [gh-aw triggering-CI guide](https://github.github.com/gh-aw/reference/triggering-ci/).
+
 ## Credits
 
 Inspired by [copilot-opentelemetry](https://github.com/pierceboggan/copilot-opentelemetry) and practical Copilot observability workflows.

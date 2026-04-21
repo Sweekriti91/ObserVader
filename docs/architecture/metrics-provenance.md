@@ -67,7 +67,7 @@ For full field definitions, see the skill references linked in each section.
 ## 2. IDE OTel Signals (VS Code)
 
 **Official sources**:
-- VS Code OTel: https://docs.github.com/en/copilot/managing-copilot/monitoring-copilot-usage-and-entitlements/monitoring-github-copilot-chat-in-the-ide
+- VS Code OTel: https://docs.github.com/en/copilot/how-tos/administer-copilot/view-usage-and-adoption
 - OTel GenAI Semantic Conventions: https://github.com/open-telemetry/semantic-conventions/blob/main/docs/gen-ai/
 - Full OTel reference: [`.github/skills/copilot-opentelemetry/SKILL.md`](../../.github/skills/copilot-opentelemetry/SKILL.md)
 
