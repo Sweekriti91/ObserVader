@@ -64,6 +64,21 @@ tags: [copilot, metrics, api, fields, ndjson, data, schema, reference]
 | `totals_by_language_model` | Language × model breakdown |
 | `totals_by_cli` | CLI-specific metrics (independent of IDE, see CLI metrics skill) |
 
+## CCR Aggregated User Counts (Apr 22 2026)
+
+Enterprise and organization-level reports now include aggregated active/passive Copilot code review user counts:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `daily_active_copilot_code_review_users` | integer | Active CCR users on that day |
+| `daily_passive_copilot_code_review_users` | integer | Passive CCR users on that day |
+| `weekly_active_copilot_code_review_users` | integer | Active CCR users in trailing 7-day window |
+| `weekly_passive_copilot_code_review_users` | integer | Passive CCR users in trailing 7-day window |
+| `monthly_active_copilot_code_review_users` | integer | Active CCR users in trailing 28-day window |
+| `monthly_passive_copilot_code_review_users` | integer | Passive CCR users in trailing 28-day window |
+
+Active = user intentionally requested/applied a CCR review. Passive = auto-triggered by repo policy with no user interaction. Active always trumps passive.
+
 > When **auto model selection** is enabled, activity is attributed to the **actual model used**
 > rather than appearing as "Auto".
 
@@ -76,7 +91,8 @@ tags: [copilot, metrics, api, fields, ndjson, data, schema, reference]
 | `used_agent` | boolean | Whether the user used IDE agent mode that day |
 | `used_chat` | boolean | Whether the user used IDE chat that day |
 | `used_cli` | boolean | Whether the user used Copilot CLI that day |
-| `used_copilot_coding_agent` | boolean | Whether the user used Copilot cloud agent (coding agent) that day |
+| `used_copilot_coding_agent` | boolean | Whether the user used Copilot cloud agent (coding agent) that day. **Deprecated Aug 1 2026** — use `used_copilot_cloud_agent` instead |
+| `used_copilot_cloud_agent` | boolean | Whether the user had Copilot cloud agent activity during the reporting period (Apr 23 2026). Mirrors `used_copilot_coding_agent` under the updated branding. Both fields coexist until Aug 1 2026 deprecation |
 | `used_copilot_code_review_active` | boolean | User intentionally engaged with Copilot code review (assigned reviewer, re-requested, applied suggestion) |
 | `used_copilot_code_review_passive` | boolean | Copilot code review auto-ran on user's PR via repo policy but user did not interact |
 

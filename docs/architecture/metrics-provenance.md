@@ -28,6 +28,9 @@ For full field definitions, see the skill references linked in each section.
 **Official sources**:
 - REST API: https://docs.github.com/en/rest/copilot/copilot-usage-metrics
 - Field concepts: https://docs.github.com/en/copilot/concepts/copilot-usage-metrics/copilot-metrics
+- Lines of Code metrics guide: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/lines-of-code-metrics
+- Reconciling metrics across sources: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/reconciling-usage-metrics
+- Example NDJSON schema: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/example-schema
 - Full field reference: [`.github/skills/copilot-data-fields/SKILL.md`](../../.github/skills/copilot-data-fields/SKILL.md)
 
 ### NDJSON → Prometheus Mapping

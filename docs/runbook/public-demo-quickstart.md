@@ -28,6 +28,10 @@ Documented signal endpoints used by this demo:
 - `POST /v1/traces`
 - `POST /v1/metrics`
 
+### Report Download URL Change (effective May 20 2026)
+
+Copilot usage metrics report download URLs are migrating from `copilot-reports-*.b01.azurefd.net` to `copilot-reports.github.com` (or `copilot-reports.*.ghe.com` for data residency). If your organization uses a firewall or proxy allowlist, add the new domain before May 20 2026. The legacy domain will continue to work during a transition period. See [changelog](https://github.blog/changelog/2026-04-22-upcoming-change-to-copilot-usage-metrics-report-download-urls/) for details.
+
 ### Copilot CLI OpenTelemetry (official docs)
 - CLI command reference § OpenTelemetry monitoring: https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference#opentelemetry-monitoring
 - CLI OTel emits traces, metrics, and span events following OTel GenAI Semantic Conventions
