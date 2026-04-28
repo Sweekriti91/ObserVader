@@ -1,0 +1,14 @@
+# CODEOWNERS — required reviewers for human-in-the-loop gates
+#
+# Used by branch protection on `main` to ensure that documentation and
+# Copilot-skill content cannot be merged without an owner's review. The
+# `docs-sync` agentic workflow (.github/workflows/docs-sync.md) opens
+# draft PRs against these paths weekly; CODEOWNERS blocks self-merge.
+
+# Documentation surface
+docs/                   @Sweekriti91
+.github/skills/         @Sweekriti91
+
+# Workflow + agent definitions (lock down self-modification)
+.github/workflows/      @Sweekriti91
+.github/agents/         @Sweekriti91

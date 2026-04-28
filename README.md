@@ -47,13 +47,32 @@ Turn raw Copilot telemetry into executive-ready KPIs, cost analysis, and agent t
 
 ```bash
 cd demo
+./demo-up.sh          # Full seeding (~2 min first time)
+```
+
+| Flag | Time | When to use |
+|---|---|---|
+| `./demo-up.sh` | ~2 min | First run — full fidelity seeding |
+| `./demo-up.sh --fast` | ~15s | Urgent demo — fewer waves, shorter delays |
+| `./demo-up.sh --skip` | ~5s | Restart — data persisted in Docker volumes |
+
+Data is persisted across restarts via Docker volumes (Prometheus, Pushgateway, Grafana).
+To wipe everything and start fresh: `./demo-teardown.sh && docker volume prune`.
+
+<details>
+<summary>Manual steps (if you prefer running each stage separately)</summary>
+
+```bash
+cd demo
 docker compose up -d
 python3 scripts/generate_sample_data.py
 python3 scripts/push_pr_metrics.py
 python3 scripts/push_usage_metrics.py
-npx tsx seed-data.ts
-npx tsx seed-cli-data.ts
+npx tsx seed-data.ts            # add --fast for reduced waves
+npx tsx seed-cli-data.ts        # add --fast for reduced waves
 ```
+
+</details>
 
 Then open:
 - Grafana: http://localhost:3001 (two dashboards: Unified + ROI & Cost Efficiency)
@@ -88,6 +107,22 @@ docs/screenshots/      Dashboard screenshots
 - Sample/seeded-data first — no live API calls, no customer identifiers in defaults
 - Enterprise tokens, customer endpoints, and secret-backed adapters are excluded
 - Public Azure hosting is intentionally deferred; optional guidance for fork maintainers only
+
+## Continuous documentation
+
+A weekly [agentic workflow](.github/workflows/docs-sync.md) (powered by
+[GitHub Agentic Workflows](https://github.github.com/gh-aw/)) sweeps the
+Copilot Metrics API docs, OpenTelemetry GenAI semantic conventions, and
+the GitHub Copilot changelog, and opens a draft PR with proposed
+additive updates to `docs/` and `.github/skills/`. The agent runs in a
+sandboxed container with a read-only token and a domain-allowlisted
+firewall — every PR is gated by [`monthly-maintenance.yml`](.github/workflows/monthly-maintenance.yml)
+checks plus [CODEOWNERS](.github/CODEOWNERS) review before it can merge.
+Nothing auto-merges.
+
+> Optional: set the `GH_AW_CI_TRIGGER_TOKEN` repo secret (a fine-grained
+> PAT with `Contents: R/W`) so PRs created by the agent trigger CI
+> checks. See the [gh-aw triggering-CI guide](https://github.github.com/gh-aw/reference/triggering-ci/).
 
 ## Credits
 

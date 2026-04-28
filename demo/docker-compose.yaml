@@ -28,12 +28,15 @@ services:
       - "--web.enable-remote-write-receiver"
     volumes:
       - ./prometheus.yaml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
     ports:
       - "9090:9090"
 
   pushgateway:
     image: prom/pushgateway:latest
     container_name: copilot-metrics-pushgateway
+    volumes:
+      - pushgateway-data:/pushgateway
     ports:
       - "9091:9091"
 
@@ -47,8 +50,14 @@ services:
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
       - ./grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana-data:/var/lib/grafana
     ports:
       - "3001:3000"
     depends_on:
       - prometheus
       - jaeger
+
+volumes:
+  prometheus-data:
+  pushgateway-data:
+  grafana-data:

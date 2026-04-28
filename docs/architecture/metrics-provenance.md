@@ -18,7 +18,7 @@ For full field definitions, see the skill references linked in each section.
 
 | Source | Transport | Seeder | Prometheus Path | Status |
 |--------|-----------|--------|-----------------|--------|
-| Usage Metrics API (NDJSON) | Pushgateway | `generate_sample_data.py` + `push_pr_metrics.py` + `push_usage_metrics.py` | Pushgateway → Prometheus scrape | **Active** — PR metrics + adoption/feature/LoC/CCR metrics all pushed |
+| Usage Metrics API (NDJSON) | Pushgateway + Remote Write | `generate_sample_data.py` + `push_pr_metrics.py` + `push_usage_metrics.py` | Remote Write (28-day backfill) + Pushgateway (latest day) | **Active** — Full 28-day time series via `prom_remote_write.py` |
 | IDE OTel (traces + metrics) | OTLP HTTP | `seed-data.ts` | OTel Collector → Prometheus exporter | **Active** |
 | CLI OTel (traces + metrics) | OTLP HTTP | `seed-cli-data.ts` | OTel Collector → Prometheus exporter | **Active** |
 
@@ -29,6 +29,9 @@ For full field definitions, see the skill references linked in each section.
 **Official sources**:
 - REST API: https://docs.github.com/en/rest/copilot/copilot-usage-metrics
 - Field concepts: https://docs.github.com/en/copilot/concepts/copilot-usage-metrics/copilot-metrics
+- Lines of Code metrics guide: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/lines-of-code-metrics
+- Reconciling metrics across sources: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/reconciling-usage-metrics
+- Example NDJSON schema: https://docs.github.com/en/copilot/reference/copilot-usage-metrics/example-schema
 - Full field reference: [`.github/skills/copilot-data-fields/SKILL.md`](../../.github/skills/copilot-data-fields/SKILL.md)
 
 ### NDJSON → Prometheus Mapping
@@ -68,7 +71,7 @@ For full field definitions, see the skill references linked in each section.
 ## 2. IDE OTel Signals (VS Code)
 
 **Official sources**:
-- VS Code OTel: https://docs.github.com/en/copilot/managing-copilot/monitoring-copilot-usage-and-entitlements/monitoring-github-copilot-chat-in-the-ide
+- Copilot OTel Monitoring: https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference#opentelemetry-monitoring
 - OTel GenAI Semantic Conventions: https://github.com/open-telemetry/semantic-conventions/blob/main/docs/gen-ai/
 - Full OTel reference: [`.github/skills/copilot-opentelemetry/SKILL.md`](../../.github/skills/copilot-opentelemetry/SKILL.md)
 
@@ -184,17 +187,18 @@ These use the same OTel metric names as IDE but are distinguishable by `service_
 |-------|--------|-------------|--------|-------------------|--------|
 | DAU Over Time (IDE) | `sum(max_over_time(copilot_daily_active_users{surface="ide"}[26h]))` | Pushgateway | `push_usage_metrics.py` | `total_active_users` (minus CLI) | **Active** |
 | DAU Over Time (CLI) | `sum(max_over_time(copilot_daily_active_users{surface="cli"}[26h]))` | Pushgateway | `push_usage_metrics.py` | `daily_active_cli_users` | **Active** |
-| Feature Adoption | `sum(copilot_feature_usage{feature="..."})` | Pushgateway | `push_usage_metrics.py` | Various `total_engaged_users` per feature | **Active** |
+| Feature Adoption | `sum(max_over_time(copilot_feature_usage{feature="..."}[26h]))` | Remote Write | `push_usage_metrics.py` | Various `total_engaged_users` per feature | **Active** |
 
 ### Code Generation & Outcomes Row
 
 | Panel | PromQL | Data Source | Seeder | Official API Field | Status |
 |-------|--------|-------------|--------|-------------------|--------|
 | LoC Suggested vs Added | `sum(max_over_time(copilot_loc_suggested[26h]))` / `copilot_loc_added` | Pushgateway | `push_usage_metrics.py` | `loc_suggested_to_add_sum` / `loc_added_sum` | **Active** |
-| Suggestion Survival Rate Trend | `sum(copilot_survival_rate)` | Pushgateway | `push_usage_metrics.py` | Computed ratio | **Active** |
-| PR Throughput | `sum(copilot_pr_merged_total)` / `sum(copilot_pr_merged_copilot)` | Pushgateway | `push_pr_metrics.py` | `total_pr_merged_count` / `total_copilot_pr_merged_count` | **Active** |
-| Median Merge Time | `sum(copilot_pr_median_merge_minutes{type="all"/"copilot"})` | Pushgateway | `push_pr_metrics.py` | `median_minutes_to_merge` / `median_minutes_to_merge_for_copilot_prs` | **Active** |
-| Code Review (CCR) | `sum(copilot_ccr_suggestions_generated/applied/trigger_rate)` | Pushgateway | `push_usage_metrics.py` | `total_code_review_copilot_suggestions_count/applied` | **Active** |
+| Suggestion Survival Rate Trend | `max_over_time(copilot_survival_rate[26h])` | Remote Write | `push_usage_metrics.py` | Computed ratio | **Active** |
+| PR Throughput | `sum(max_over_time(copilot_pr_merged_total[26h]))` / `sum(max_over_time(copilot_pr_merged_copilot[26h]))` | Remote Write | `push_pr_metrics.py` | `total_pr_merged_count` / `total_copilot_pr_merged_count` | **Active** |
+| Median Merge Time | `sum(max_over_time(copilot_pr_median_merge_minutes{type="all"/"copilot"}[26h]))` | Remote Write | `push_pr_metrics.py` | `median_minutes_to_merge` / `median_minutes_to_merge_for_copilot_prs` | **Active** |
+| Code Review (CCR) | `sum(max_over_time(copilot_ccr_suggestions_generated[26h]))` / etc. | Remote Write | `push_usage_metrics.py` | `total_code_review_copilot_suggestions_count/applied` | **Active** |
+| Active vs Passive CCR Users | `sum(max_over_time(copilot_ccr_users{type="active/passive",window="daily/monthly"}[26h]))` | Remote Write | `push_usage_metrics.py` | `daily/monthly_active/passive_copilot_code_review_users` | **Active** |
 
 ### Agent Observability (OTel) Row
 
@@ -257,7 +261,7 @@ These use the same OTel metric names as IDE but are distinguishable by `service_
 | Copilot PR Share | `sum(copilot_pr_merged_copilot) / sum(copilot_pr_merged_total)` | Pushgateway | `push_pr_metrics.py` | Usage Metrics API | **Active** |
 | Merge Time Δ | `copilot_ttm - all_ttm` | Pushgateway | `push_pr_metrics.py` | Usage Metrics API | **Active** |
 | CLI Lines Added Over Time | Lines added/removed timeseries | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.session.lines_*` | **Active** |
-| CLI Tool Distribution | `sum by (gen_ai_tool_name) (increase(github_copilot_tool_call_count_total{service_name="github-copilot"}[1h]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.tool.call.count` | **Active** |
+| CLI Tool Distribution | `sum by (gen_ai_tool_name) (increase(github_copilot_tool_call_count_total[1h]))` | OTel → Prometheus | `seed-cli-data.ts` | `github.copilot.tool.call.count` | **Active** |
 
 ---
 
@@ -272,10 +276,12 @@ These use the same OTel metric names as IDE but are distinguishable by `service_
   - Plus cross-referenced PR metrics from Pushgateway
 
 ### Remaining Limitations
-- NDJSON-derived metrics are point-in-time snapshots (latest day), not full 28-day time series
 - `copilot_monthly_active_users` is approximated from max engaged across available days
 - `copilot_monthly_active_agent_users` is estimated as 40% of chat users (no per-user `used_agent` flag in NDJSON)
 - CLI OTel cost data is available only from CLI sessions — IDE sessions do not emit cost
+
+### Label Notes
+- The OTel Collector Prometheus exporter maps the `service.name` resource attribute to the `job` label (not `service_name`). CLI metrics use `job="github-copilot"`, IDE metrics use `job="copilot-chat"`. Dashboard queries that need to filter by service use the `job` label accordingly.
 
 ---
 

@@ -553,6 +553,62 @@
       "description": "Formula (PromQL):\n- sum(max_over_time(copilot_monthly_active_agent_users[26h]))\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
+      "id": 30,
+      "type": "stat",
+      "title": "Cloud Agent MAU",
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "targets": [
+        {
+          "expr": "sum(max_over_time(copilot_monthly_active_cloud_agent_users[26h]))",
+          "legendFormat": "Cloud Agent MAU",
+          "refId": "A",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "graphMode": "area",
+        "colorMode": "value",
+        "justifyMode": "auto",
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "description": "Monthly active users of Copilot cloud agent (coding agent)"
+    },
+    {
       "id": 8,
       "type": "row",
       "title": "\ud83d\udcc8 Adoption & Usage Trends",
@@ -658,35 +714,35 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(copilot_feature_usage{feature=\"completions\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"completions\"}[26h]))",
           "legendFormat": "Completions",
           "instant": false,
           "range": true
         },
         {
           "refId": "B",
-          "expr": "sum(copilot_feature_usage{feature=\"chat_ask\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"chat_ask\"}[26h]))",
           "legendFormat": "Chat (Ask)",
           "instant": false,
           "range": true
         },
         {
           "refId": "C",
-          "expr": "sum(copilot_feature_usage{feature=\"chat_edit\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"chat_edit\"}[26h]))",
           "legendFormat": "Chat (Edit)",
           "instant": false,
           "range": true
         },
         {
           "refId": "D",
-          "expr": "sum(copilot_feature_usage{feature=\"chat_agent\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"chat_agent\"}[26h]))",
           "legendFormat": "Agent Mode",
           "instant": false,
           "range": true
         },
         {
           "refId": "E",
-          "expr": "sum(copilot_feature_usage{feature=\"cli\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"cli\"}[26h]))",
           "legendFormat": "CLI",
           "instant": false,
           "range": true
@@ -846,7 +902,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "copilot_survival_rate",
+          "expr": "max_over_time(copilot_survival_rate[26h])",
           "legendFormat": "Survival Rate",
           "instant": false,
           "range": true
@@ -928,15 +984,22 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(copilot_pr_merged_total)",
+          "expr": "sum(max_over_time(copilot_pr_merged_total[26h]))",
           "legendFormat": "All PRs Merged",
           "instant": false,
           "range": true
         },
         {
           "refId": "B",
-          "expr": "sum(copilot_pr_merged_copilot)",
+          "expr": "sum(max_over_time(copilot_pr_merged_copilot[26h]))",
           "legendFormat": "Copilot PRs Merged",
+          "instant": false,
+          "range": true
+        },
+        {
+          "refId": "C",
+          "expr": "sum(max_over_time(copilot_pr_merged_copilot_reviewed[26h]))",
+          "legendFormat": "Copilot-Reviewed PRs Merged",
           "instant": false,
           "range": true
         }
@@ -1005,15 +1068,22 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(copilot_pr_median_merge_minutes{type=\"all\"})",
+          "expr": "sum(max_over_time(copilot_pr_median_merge_minutes{type=\"all\"}[26h]))",
           "legendFormat": "All PRs",
           "instant": false,
           "range": true
         },
         {
           "refId": "B",
-          "expr": "sum(copilot_pr_median_merge_minutes{type=\"copilot\"})",
+          "expr": "sum(max_over_time(copilot_pr_median_merge_minutes{type=\"copilot\"}[26h]))",
           "legendFormat": "Copilot PRs",
+          "instant": false,
+          "range": true
+        },
+        {
+          "refId": "C",
+          "expr": "sum(max_over_time(copilot_pr_median_merge_minutes{type=\"copilot_reviewed\"}[26h]))",
+          "legendFormat": "Copilot-Reviewed PRs",
           "instant": false,
           "range": true
         }
@@ -1083,21 +1153,21 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(copilot_ccr_suggestions_generated)",
+          "expr": "sum(max_over_time(copilot_ccr_suggestions_generated[26h]))",
           "legendFormat": "Suggestions Generated",
           "instant": false,
           "range": true
         },
         {
           "refId": "B",
-          "expr": "sum(copilot_ccr_suggestions_applied)",
+          "expr": "sum(max_over_time(copilot_ccr_suggestions_applied[26h]))",
           "legendFormat": "Suggestions Applied",
           "instant": false,
           "range": true
         },
         {
           "refId": "C",
-          "expr": "sum(copilot_ccr_trigger_rate)",
+          "expr": "max_over_time(copilot_ccr_trigger_rate[26h])",
           "legendFormat": "Trigger Rate",
           "instant": false,
           "range": true
@@ -1177,6 +1247,122 @@
       "description": "Formula (PromQL):\n- sum(copilot_ccr_suggestions_generated)\n- sum(copilot_ccr_suggestions_applied)\n- sum(copilot_ccr_trigger_rate)\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
+      "id": 31,
+      "type": "timeseries",
+      "title": "Active vs Passive CCR Users",
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(max_over_time(copilot_ccr_users{type=\"active\",window=\"daily\"}[26h]))",
+          "legendFormat": "Active (Daily)",
+          "instant": false,
+          "range": true
+        },
+        {
+          "refId": "B",
+          "expr": "sum(max_over_time(copilot_ccr_users{type=\"passive\",window=\"daily\"}[26h]))",
+          "legendFormat": "Passive (Daily)",
+          "instant": false,
+          "range": true
+        },
+        {
+          "refId": "C",
+          "expr": "sum(max_over_time(copilot_ccr_users{type=\"active\",window=\"monthly\"}[26h]))",
+          "legendFormat": "Active (Monthly)",
+          "instant": false,
+          "range": true
+        },
+        {
+          "refId": "D",
+          "expr": "sum(max_over_time(copilot_ccr_users{type=\"passive\",window=\"monthly\"}[26h]))",
+          "legendFormat": "Passive (Monthly)",
+          "instant": false,
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "auto",
+            "spanNulls": false,
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Passive (Daily)"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": { "fill": "dash", "dash": [10, 10] }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Passive (Monthly)"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": { "fill": "dash", "dash": [10, 10] }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Active = intentionally requested/applied CCR review. Passive = auto-triggered by repo policy. Active always trumps passive."
+    },
+    {
       "id": 19,
       "type": "row",
       "title": "\u26a1 Agent Observability (OTel)",
@@ -1185,7 +1371,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 64
       },
       "panels": []
     },

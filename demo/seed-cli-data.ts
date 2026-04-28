@@ -569,8 +569,9 @@ function generateSchedule(): { timeMs: number; team: typeof TEAMS[0] }[] {
 }
 
 // ── Main ───────────────────────────────────────────────────────
-const WAVE_DELAY_MS = parseInt(getArg("--wave-delay", "2000"), 10);
-const NUM_WAVES = parseInt(getArg("--waves", "15"), 10);
+const FAST = process.argv.includes("--fast");
+const WAVE_DELAY_MS = parseInt(getArg("--wave-delay", FAST ? "200" : "2000"), 10);
+const NUM_WAVES = parseInt(getArg("--waves", FAST ? "3" : "15"), 10);
 
 function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
