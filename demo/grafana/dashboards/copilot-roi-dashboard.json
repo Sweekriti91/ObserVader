@@ -1,7 +1,7 @@
 {
   "uid": "copilot-roi-dashboard",
   "title": "Copilot ROI & Cost Efficiency",
-  "description": "Cost, efficiency, and productivity metrics — powered by CLI OTel signals and Usage Metrics API data",
+  "description": "Cost, efficiency, and productivity metrics \u2014 powered by CLI OTel signals and Usage Metrics API data",
   "tags": [
     "copilot",
     "roi",
@@ -43,17 +43,29 @@
     {
       "id": 1,
       "type": "row",
-      "title": "💰 Cost KPIs",
+      "title": "\ud83d\udcb0 Cost KPIs",
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
       "panels": []
     },
     {
       "id": 2,
       "type": "stat",
       "title": "Total Cost (7d)",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 0, "y": 1 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 1
+      },
       "targets": [
         {
           "refId": "A",
@@ -66,26 +78,51 @@
       "fieldConfig": {
         "defaults": {
           "unit": "currencyUSD",
-          "color": { "mode": "fixed", "fixedColor": "green" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_cost_sum[7d]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Lower values are better for efficiency; compare with output panels (LoC/session/PR) to judge ROI.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 3,
       "type": "stat",
       "title": "Cost per Session",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 4, "y": 1 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
       "targets": [
         {
           "refId": "A",
@@ -98,26 +135,51 @@
       "fieldConfig": {
         "defaults": {
           "unit": "currencyUSD",
-          "color": { "mode": "fixed", "fixedColor": "blue" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_cost_sum[7d])) / clamp_min(sum(increase(github_copilot_cost_count[7d])), 1)\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Lower values are better for efficiency; compare with output panels (LoC/session/PR) to judge ROI.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 4,
       "type": "stat",
       "title": "Cost per LoC",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 8, "y": 1 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 1
+      },
       "targets": [
         {
           "refId": "A",
@@ -131,26 +193,51 @@
         "defaults": {
           "unit": "currencyUSD",
           "decimals": 4,
-          "color": { "mode": "fixed", "fixedColor": "cyan" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "cyan", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "cyan"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "cyan",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_cost_sum[7d])) / clamp_min(sum(increase(github_copilot_session_lines_added_sum[7d])), 1)\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Lower values are better for efficiency; compare with output panels (LoC/session/PR) to judge ROI.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 5,
       "type": "stat",
       "title": "AI Units (7d)",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 12, "y": 1 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 1
+      },
       "targets": [
         {
           "refId": "A",
@@ -163,26 +250,51 @@
       "fieldConfig": {
         "defaults": {
           "unit": "short",
-          "color": { "mode": "fixed", "fixedColor": "purple" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "purple", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_aiu_sum[7d]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 6,
       "type": "stat",
       "title": "Premium Requests (7d)",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 16, "y": 1 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
       "targets": [
         {
           "refId": "A",
@@ -195,26 +307,51 @@
       "fieldConfig": {
         "defaults": {
           "unit": "short",
-          "color": { "mode": "fixed", "fixedColor": "orange" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "orange", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "orange"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_session_premium_requests_sum[7d]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 7,
       "type": "stat",
       "title": "Cache Hit Ratio",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 20, "y": 1 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
       "targets": [
         {
           "refId": "A",
@@ -227,34 +364,72 @@
       "fieldConfig": {
         "defaults": {
           "unit": "percentunit",
-          "color": { "mode": "fixed", "fixedColor": "yellow" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "yellow", "value": 0.3 }, { "color": "green", "value": 0.5 }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "yellow"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 0.3
+              },
+              {
+                "color": "green",
+                "value": 0.5
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_cache_read_tokens_sum[7d])) / clamp_min(sum(increase(github_copilot_cache_read_tokens_sum[7d])) + sum(increase(github_copilot_cache_creation_tokens_sum[7d])) + sum(increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\",service_name=\"github-copilot\"}[7d])), 1)\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 8,
       "type": "row",
-      "title": "📈 Cost Trends",
+      "title": "\ud83d\udcc8 Cost Trends",
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 6 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
       "panels": []
     },
     {
       "id": 9,
       "type": "timeseries",
       "title": "Cost Over Time",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 7 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 7
+      },
       "targets": [
         {
           "refId": "A",
@@ -274,23 +449,44 @@
             "pointSize": 5,
             "showPoints": "auto",
             "spanNulls": false,
-            "stacking": { "mode": "none", "group": "A" }
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
           },
-          "color": { "mode": "fixed", "fixedColor": "green" }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
-      }
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_cost_sum[1h]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Lower values are better for efficiency; compare with output panels (LoC/session/PR) to judge ROI.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 10,
       "type": "timeseries",
       "title": "Cost by Model",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 7 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 7
+      },
       "targets": [
         {
           "refId": "A",
@@ -310,23 +506,43 @@
             "pointSize": 5,
             "showPoints": "auto",
             "spanNulls": false,
-            "stacking": { "mode": "normal", "group": "A" }
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
           },
-          "color": { "mode": "palette-classic" }
+          "color": {
+            "mode": "palette-classic"
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "multi", "sort": "desc" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
-      }
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Formula (PromQL):\n- sum by (gen_ai_request_model) (increase(github_copilot_cost_sum[1h]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Lower values are better for efficiency; compare with output panels (LoC/session/PR) to judge ROI.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 11,
       "type": "timeseries",
       "title": "Cost by Team",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 15 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 15
+      },
       "targets": [
         {
           "refId": "A",
@@ -346,23 +562,43 @@
             "pointSize": 5,
             "showPoints": "never",
             "spanNulls": false,
-            "stacking": { "mode": "normal", "group": "A" }
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
           },
-          "color": { "mode": "palette-classic" }
+          "color": {
+            "mode": "palette-classic"
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "multi", "sort": "desc" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
-      }
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Formula (PromQL):\n- sum by (contoso_team) (increase(github_copilot_cost_sum[1h]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Lower values are better for efficiency; compare with output panels (LoC/session/PR) to judge ROI.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 12,
       "type": "timeseries",
       "title": "AI Units by Model",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 15 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 15
+      },
       "targets": [
         {
           "refId": "A",
@@ -382,31 +618,56 @@
             "pointSize": 5,
             "showPoints": "never",
             "spanNulls": false,
-            "stacking": { "mode": "normal", "group": "A" }
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
           },
-          "color": { "mode": "palette-classic" }
+          "color": {
+            "mode": "palette-classic"
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "multi", "sort": "desc" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
-      }
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Formula (PromQL):\n- sum by (gen_ai_request_model) (increase(github_copilot_aiu_sum[1h]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 13,
       "type": "row",
-      "title": "⚡ Cache & Efficiency",
+      "title": "\u26a1 Cache & Efficiency",
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 23 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
       "panels": []
     },
     {
       "id": 14,
       "type": "timeseries",
       "title": "Cache Hit Ratio Over Time",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 24 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 24
+      },
       "targets": [
         {
           "refId": "A",
@@ -428,24 +689,61 @@
             "pointSize": 5,
             "showPoints": "auto",
             "spanNulls": false,
-            "stacking": { "mode": "none", "group": "A" }
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
           },
-          "color": { "mode": "fixed", "fixedColor": "yellow" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "yellow", "value": 0.3 }, { "color": "green", "value": 0.5 }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "yellow"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 0.3
+              },
+              {
+                "color": "green",
+                "value": 0.5
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
-      }
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_cache_read_tokens_sum[1h])) / clamp_min(sum(increase(github_copilot_cache_read_tokens_sum[1h])) + sum(increase(github_copilot_cache_creation_tokens_sum[1h])) + sum(increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\",service_name=\"github-copilot\"}[1h])), 1)\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 15,
       "type": "timeseries",
       "title": "Premium Requests Over Time",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 24 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 24
+      },
       "targets": [
         {
           "refId": "A",
@@ -465,23 +763,44 @@
             "pointSize": 5,
             "showPoints": "never",
             "spanNulls": false,
-            "stacking": { "mode": "none", "group": "A" }
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
           },
-          "color": { "mode": "fixed", "fixedColor": "orange" }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "orange"
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
-      }
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_session_premium_requests_sum[1h]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 16,
       "type": "timeseries",
       "title": "Token Cache Breakdown",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 32 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
       "targets": [
         {
           "refId": "A",
@@ -515,24 +834,43 @@
             "pointSize": 5,
             "showPoints": "never",
             "spanNulls": false,
-            "stacking": { "mode": "normal", "group": "A" }
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
           },
-          "color": { "mode": "palette-classic" }
+          "color": {
+            "mode": "palette-classic"
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "multi", "sort": "desc" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
       },
-      "description": "Breakdown of input token sources: cache reads (reused), cache creation (new), and fresh non-cached input"
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_cache_read_tokens_sum[1h]))\n- sum(increase(github_copilot_cache_creation_tokens_sum[1h]))\n- sum(increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\",service_name=\"github-copilot\"}[1h]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Use this to understand demand and model mix; increasing output with stable input often indicates better efficiency.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 17,
       "type": "timeseries",
       "title": "Cost per Session Trend",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 32 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
       "targets": [
         {
           "refId": "A",
@@ -552,31 +890,57 @@
             "pointSize": 5,
             "showPoints": "auto",
             "spanNulls": false,
-            "stacking": { "mode": "none", "group": "A" }
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
           },
-          "color": { "mode": "fixed", "fixedColor": "blue" }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "single", "sort": "none" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
-      }
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_cost_sum[1h])) / clamp_min(sum(increase(github_copilot_cost_count[1h])), 1)\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Lower values are better for efficiency; compare with output panels (LoC/session/PR) to judge ROI.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 18,
       "type": "row",
-      "title": "📊 Productivity Impact",
+      "title": "\ud83d\udcca Productivity Impact",
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 40 },
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 40
+      },
       "panels": []
     },
     {
       "id": 19,
       "type": "stat",
       "title": "Lines Added (CLI, 7d)",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 0, "y": 41 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 0,
+        "y": 41
+      },
       "targets": [
         {
           "refId": "A",
@@ -589,26 +953,51 @@
       "fieldConfig": {
         "defaults": {
           "unit": "short",
-          "color": { "mode": "fixed", "fixedColor": "green" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_session_lines_added_sum[7d]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 20,
       "type": "stat",
       "title": "Lines Removed (CLI, 7d)",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 4, "y": 41 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 4,
+        "y": 41
+      },
       "targets": [
         {
           "refId": "A",
@@ -621,26 +1010,51 @@
       "fieldConfig": {
         "defaults": {
           "unit": "short",
-          "color": { "mode": "fixed", "fixedColor": "red" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "red"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_session_lines_removed_sum[7d]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 21,
       "type": "stat",
       "title": "Files Modified (CLI, 7d)",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 8, "y": 41 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 8,
+        "y": 41
+      },
       "targets": [
         {
           "refId": "A",
@@ -653,26 +1067,51 @@
       "fieldConfig": {
         "defaults": {
           "unit": "short",
-          "color": { "mode": "fixed", "fixedColor": "blue" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_session_files_modified_sum[7d]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 22,
       "type": "stat",
       "title": "LoC per Session",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 12, "y": 41 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 12,
+        "y": 41
+      },
       "targets": [
         {
           "refId": "A",
@@ -686,26 +1125,51 @@
         "defaults": {
           "unit": "short",
           "decimals": 1,
-          "color": { "mode": "fixed", "fixedColor": "cyan" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "cyan", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "cyan"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "cyan",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_session_lines_added_sum[7d])) / clamp_min(sum(increase(github_copilot_cost_count[7d])), 1)\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 23,
       "type": "stat",
       "title": "Copilot PR Share",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 16, "y": 41 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 16,
+        "y": 41
+      },
       "targets": [
         {
           "refId": "A",
@@ -718,31 +1182,56 @@
       "fieldConfig": {
         "defaults": {
           "unit": "percentunit",
-          "color": { "mode": "fixed", "fixedColor": "purple" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "purple", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
-      }
+      },
+      "description": "Formula (PromQL):\n- sum(copilot_pr_merged_copilot) / clamp_min(sum(copilot_pr_merged_total), 1)\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Higher values indicate stronger adoption/efficiency unless this panel explicitly represents latency or cost.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 24,
       "type": "stat",
-      "title": "Merge Time Δ",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 5, "w": 4, "x": 20, "y": 41 },
+      "title": "Merge Time \u0394",
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 4,
+        "x": 20,
+        "y": 41
+      },
       "targets": [
         {
           "refId": "A",
           "expr": "sum(copilot_pr_median_merge_minutes{type=\"copilot\"}) - sum(copilot_pr_median_merge_minutes{type=\"all\"})",
-          "legendFormat": "Δ Minutes",
+          "legendFormat": "\u0394 Minutes",
           "instant": true,
           "range": false
         }
@@ -750,27 +1239,51 @@
       "fieldConfig": {
         "defaults": {
           "unit": "min",
-          "color": { "mode": "fixed", "fixedColor": "orange" },
-          "thresholds": { "mode": "absolute", "steps": [{ "color": "orange", "value": null }] }
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "orange"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              }
+            ]
+          }
         },
         "overrides": []
       },
       "options": {
-        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
         "graphMode": "area",
         "colorMode": "value",
         "justifyMode": "auto",
         "textMode": "auto",
         "wideLayout": true
       },
-      "description": "Copilot-authored PR merge time minus overall (negative = faster)"
+      "description": "Formula (PromQL):\n- sum(copilot_pr_median_merge_minutes{type=\"copilot\"}) - sum(copilot_pr_median_merge_minutes{type=\"all\"})\n\nData provenance: Usage Metrics API NDJSON fields \u2192 push_usage_metrics.py / push_pr_metrics.py \u2192 Pushgateway \u2192 Prometheus\n\nHow to interpret: Negative values are better (Copilot path is faster than baseline); positive values are worse.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 25,
       "type": "timeseries",
       "title": "CLI Lines Added Over Time",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 46 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 46
+      },
       "targets": [
         {
           "refId": "A",
@@ -797,23 +1310,43 @@
             "pointSize": 5,
             "showPoints": "auto",
             "spanNulls": false,
-            "stacking": { "mode": "none", "group": "A" }
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
           },
-          "color": { "mode": "palette-classic" }
+          "color": {
+            "mode": "palette-classic"
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "multi", "sort": "desc" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
-      }
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Formula (PromQL):\n- sum(increase(github_copilot_session_lines_added_sum[1h]))\n- sum(increase(github_copilot_session_lines_removed_sum[1h]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     },
     {
       "id": 26,
       "type": "timeseries",
       "title": "CLI Tool Distribution",
-      "datasource": { "type": "prometheus" },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 46 },
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 46
+      },
       "targets": [
         {
           "refId": "A",
@@ -833,17 +1366,29 @@
             "pointSize": 5,
             "showPoints": "never",
             "spanNulls": false,
-            "stacking": { "mode": "normal", "group": "A" }
+            "stacking": {
+              "mode": "normal",
+              "group": "A"
+            }
           },
-          "color": { "mode": "palette-classic" }
+          "color": {
+            "mode": "palette-classic"
+          }
         },
         "overrides": []
       },
       "options": {
-        "tooltip": { "mode": "multi", "sort": "desc" },
-        "legend": { "displayMode": "list", "placement": "bottom", "calcs": [] }
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
       },
-      "description": "CLI-specific tool calls: bash, view, edit, create, grep, glob, web_fetch, task"
+      "description": "Formula (PromQL):\n- sum by (gen_ai_tool_name) (increase(github_copilot_tool_call_count_total{service_name=\"github-copilot\"}[1h]))\n\nData provenance: Copilot CLI OpenTelemetry metrics (service.name=github-copilot) \u2192 OTel Collector \u2192 Prometheus\n\nHow to interpret: Track trend direction and compare with adjacent panels in the same row to interpret outcome quality.\n\nInspect in Grafana: Panel title \u2192 \u22ee menu \u2192 Inspect \u2192 Query (or Edit \u2192 Query) to see the exact datasource and query execution details."
     }
   ]
 }

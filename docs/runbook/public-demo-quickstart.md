@@ -3,6 +3,26 @@
 This document details how the demo's seeded data maps to real GitHub Copilot and OpenTelemetry endpoint families.
 For quick-start steps, see the [root README](../../README.md#quick-start).
 
+## Inspect Panel Formula, APIs, and Provenance in Grafana
+
+Use these steps to see exactly how each panel is calculated and what data pipeline it uses:
+
+1. Open Grafana at `http://localhost:3001` (`admin` / `demo`).
+2. Open either dashboard: **Copilot Metrics — Unified Dashboard** or **Copilot ROI & Cost Efficiency**.
+3. Hover a panel title and open the panel menu (`⋮`).
+4. Click **Inspect → Query** to see:
+   - datasource used (Prometheus in this demo)
+   - full PromQL formula (`expr`) after template/transform resolution
+   - raw query results and execution timing
+5. Click **Edit → Query** to view and modify the same formula directly in the panel editor.
+6. Read the panel **Description** tooltip (ⓘ) for:
+   - Formula (PromQL)
+   - Data provenance chain (API/OTel → seeder → Prometheus → panel)
+   - How to interpret the metric (higher/lower/negative guidance)
+
+> Note: this demo intentionally uses seeded data with real protocol and schema shapes.
+> Usage-style metrics originate from seeded NDJSON, and observability/cost metrics originate from seeded OTel signals.
+
 ## Endpoint Families (with official sources)
 
 This public demo uses real endpoint patterns and metric families, but in seeded/sample mode by default.

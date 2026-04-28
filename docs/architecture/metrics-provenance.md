@@ -9,6 +9,7 @@ Two dashboards:
 Anyone plugging real data into this stack should see the same shapes — the seeded data is modeled after real API response schemas and OTel signal conventions.
 
 For endpoint-level mapping, see [Endpoint Realism Reference](../runbook/public-demo-quickstart.md).
+For Grafana panel-level formula/query inspection steps and interpretation guidance, see [Inspect Panel Formula, APIs, and Provenance in Grafana](../runbook/public-demo-quickstart.md#inspect-panel-formula-apis-and-provenance-in-grafana).
 For full field definitions, see the skill references linked in each section.
 
 ---

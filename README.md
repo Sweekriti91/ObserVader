@@ -80,6 +80,7 @@ Then open:
 - Prometheus: http://localhost:9090
 
 For endpoint realism details and protocol-shape mapping, see [docs/runbook/public-demo-quickstart.md](docs/runbook/public-demo-quickstart.md).
+For panel-level formulas, data provenance, and interpretation guidance directly in Grafana, see [Inspect Panel Formula, APIs, and Provenance](docs/runbook/public-demo-quickstart.md#inspect-panel-formula-apis-and-provenance-in-grafana).
 
 ## KPI Reference
 
