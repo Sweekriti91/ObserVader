@@ -9,8 +9,8 @@ from pathlib import Path
 random.seed(42)
 
 OUTPUT = Path(__file__).resolve().parent.parent / "sample-data" / "enterprise-28d.ndjson"
-START = date(2026, 3, 3)
 DAYS = 28
+START = date.today() - timedelta(days=DAYS - 1)  # always relative to today
 
 
 def noise(base: float, pct: float = 0.15) -> int:

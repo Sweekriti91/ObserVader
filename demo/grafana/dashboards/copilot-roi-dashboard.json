@@ -218,7 +218,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(increase(github_copilot_cache_read_tokens_sum[7d])) / clamp_min(sum(increase(github_copilot_cache_read_tokens_sum[7d])) + sum(increase(github_copilot_cache_creation_tokens_sum[7d])) + sum(increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\",service_name=\"github-copilot\"}[7d])), 1)",
+          "expr": "sum(increase(github_copilot_cache_read_tokens_sum[7d])) / clamp_min(sum(increase(github_copilot_cache_read_tokens_sum[7d])) + sum(increase(github_copilot_cache_creation_tokens_sum[7d])) + sum(increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\",job=\"github-copilot\"}[7d])), 1)",
           "legendFormat": "Cache Hit %",
           "instant": true,
           "range": false
@@ -410,7 +410,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(increase(github_copilot_cache_read_tokens_sum[1h])) / clamp_min(sum(increase(github_copilot_cache_read_tokens_sum[1h])) + sum(increase(github_copilot_cache_creation_tokens_sum[1h])) + sum(increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\",service_name=\"github-copilot\"}[1h])), 1)",
+          "expr": "sum(increase(github_copilot_cache_read_tokens_sum[1h])) / clamp_min(sum(increase(github_copilot_cache_read_tokens_sum[1h])) + sum(increase(github_copilot_cache_creation_tokens_sum[1h])) + sum(increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\",job=\"github-copilot\"}[1h])), 1)",
           "legendFormat": "Cache Hit %",
           "instant": false,
           "range": true
@@ -499,7 +499,7 @@
         },
         {
           "refId": "C",
-          "expr": "sum(increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\",service_name=\"github-copilot\"}[1h]))",
+          "expr": "sum(increase(gen_ai_client_token_usage_sum{gen_ai_token_type=\"input\",job=\"github-copilot\"}[1h]))",
           "legendFormat": "Fresh Input",
           "instant": false,
           "range": true
@@ -817,7 +817,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum by (gen_ai_tool_name) (increase(github_copilot_tool_call_count_total{service_name=\"github-copilot\"}[1h]))",
+          "expr": "sum by (gen_ai_tool_name) (increase(github_copilot_tool_call_count_total[1h]))",
           "legendFormat": "{{gen_ai_tool_name}}",
           "instant": false,
           "range": true

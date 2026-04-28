@@ -47,13 +47,32 @@ Turn raw Copilot telemetry into executive-ready KPIs, cost analysis, and agent t
 
 ```bash
 cd demo
+./demo-up.sh          # Full seeding (~2 min first time)
+```
+
+| Flag | Time | When to use |
+|---|---|---|
+| `./demo-up.sh` | ~2 min | First run — full fidelity seeding |
+| `./demo-up.sh --fast` | ~15s | Urgent demo — fewer waves, shorter delays |
+| `./demo-up.sh --skip` | ~5s | Restart — data persisted in Docker volumes |
+
+Data is persisted across restarts via Docker volumes (Prometheus, Pushgateway, Grafana).
+To wipe everything and start fresh: `./demo-teardown.sh && docker volume prune`.
+
+<details>
+<summary>Manual steps (if you prefer running each stage separately)</summary>
+
+```bash
+cd demo
 docker compose up -d
 python3 scripts/generate_sample_data.py
 python3 scripts/push_pr_metrics.py
 python3 scripts/push_usage_metrics.py
-npx tsx seed-data.ts
-npx tsx seed-cli-data.ts
+npx tsx seed-data.ts            # add --fast for reduced waves
+npx tsx seed-cli-data.ts        # add --fast for reduced waves
 ```
+
+</details>
 
 Then open:
 - Grafana: http://localhost:3001 (two dashboards: Unified + ROI & Cost Efficiency)

@@ -708,35 +708,35 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(copilot_feature_usage{feature=\"completions\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"completions\"}[26h]))",
           "legendFormat": "Completions",
           "instant": false,
           "range": true
         },
         {
           "refId": "B",
-          "expr": "sum(copilot_feature_usage{feature=\"chat_ask\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"chat_ask\"}[26h]))",
           "legendFormat": "Chat (Ask)",
           "instant": false,
           "range": true
         },
         {
           "refId": "C",
-          "expr": "sum(copilot_feature_usage{feature=\"chat_edit\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"chat_edit\"}[26h]))",
           "legendFormat": "Chat (Edit)",
           "instant": false,
           "range": true
         },
         {
           "refId": "D",
-          "expr": "sum(copilot_feature_usage{feature=\"chat_agent\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"chat_agent\"}[26h]))",
           "legendFormat": "Agent Mode",
           "instant": false,
           "range": true
         },
         {
           "refId": "E",
-          "expr": "sum(copilot_feature_usage{feature=\"cli\"})",
+          "expr": "sum(max_over_time(copilot_feature_usage{feature=\"cli\"}[26h]))",
           "legendFormat": "CLI",
           "instant": false,
           "range": true
@@ -894,7 +894,7 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "copilot_survival_rate",
+          "expr": "max_over_time(copilot_survival_rate[26h])",
           "legendFormat": "Survival Rate",
           "instant": false,
           "range": true
@@ -975,21 +975,21 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(copilot_pr_merged_total)",
+          "expr": "sum(max_over_time(copilot_pr_merged_total[26h]))",
           "legendFormat": "All PRs Merged",
           "instant": false,
           "range": true
         },
         {
           "refId": "B",
-          "expr": "sum(copilot_pr_merged_copilot)",
+          "expr": "sum(max_over_time(copilot_pr_merged_copilot[26h]))",
           "legendFormat": "Copilot PRs Merged",
           "instant": false,
           "range": true
         },
         {
           "refId": "C",
-          "expr": "sum(copilot_pr_merged_copilot_reviewed)",
+          "expr": "sum(max_over_time(copilot_pr_merged_copilot_reviewed[26h]))",
           "legendFormat": "Copilot-Reviewed PRs Merged",
           "instant": false,
           "range": true
@@ -1058,21 +1058,21 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(copilot_pr_median_merge_minutes{type=\"all\"})",
+          "expr": "sum(max_over_time(copilot_pr_median_merge_minutes{type=\"all\"}[26h]))",
           "legendFormat": "All PRs",
           "instant": false,
           "range": true
         },
         {
           "refId": "B",
-          "expr": "sum(copilot_pr_median_merge_minutes{type=\"copilot\"})",
+          "expr": "sum(max_over_time(copilot_pr_median_merge_minutes{type=\"copilot\"}[26h]))",
           "legendFormat": "Copilot PRs",
           "instant": false,
           "range": true
         },
         {
           "refId": "C",
-          "expr": "sum(copilot_pr_median_merge_minutes{type=\"copilot_reviewed\"})",
+          "expr": "sum(max_over_time(copilot_pr_median_merge_minutes{type=\"copilot_reviewed\"}[26h]))",
           "legendFormat": "Copilot-Reviewed PRs",
           "instant": false,
           "range": true
@@ -1142,21 +1142,21 @@
       "targets": [
         {
           "refId": "A",
-          "expr": "sum(copilot_ccr_suggestions_generated)",
+          "expr": "sum(max_over_time(copilot_ccr_suggestions_generated[26h]))",
           "legendFormat": "Suggestions Generated",
           "instant": false,
           "range": true
         },
         {
           "refId": "B",
-          "expr": "sum(copilot_ccr_suggestions_applied)",
+          "expr": "sum(max_over_time(copilot_ccr_suggestions_applied[26h]))",
           "legendFormat": "Suggestions Applied",
           "instant": false,
           "range": true
         },
         {
           "refId": "C",
-          "expr": "sum(copilot_ccr_trigger_rate)",
+          "expr": "max_over_time(copilot_ccr_trigger_rate[26h])",
           "legendFormat": "Trigger Rate",
           "instant": false,
           "range": true
