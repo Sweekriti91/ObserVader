@@ -197,6 +197,7 @@ These use the same OTel metric names as IDE but are distinguishable by `service_
 | PR Throughput | `sum(max_over_time(copilot_pr_merged_total[26h]))` / `sum(max_over_time(copilot_pr_merged_copilot[26h]))` | Remote Write | `push_pr_metrics.py` | `total_pr_merged_count` / `total_copilot_pr_merged_count` | **Active** |
 | Median Merge Time | `sum(max_over_time(copilot_pr_median_merge_minutes{type="all"/"copilot"}[26h]))` | Remote Write | `push_pr_metrics.py` | `median_minutes_to_merge` / `median_minutes_to_merge_for_copilot_prs` | **Active** |
 | Code Review (CCR) | `sum(max_over_time(copilot_ccr_suggestions_generated[26h]))` / etc. | Remote Write | `push_usage_metrics.py` | `total_code_review_copilot_suggestions_count/applied` | **Active** |
+| Active vs Passive CCR Users | `sum(max_over_time(copilot_ccr_users{type="active/passive",window="daily/monthly"}[26h]))` | Remote Write | `push_usage_metrics.py` | `daily/monthly_active/passive_copilot_code_review_users` | **Active** |
 
 ### Agent Observability (OTel) Row
 

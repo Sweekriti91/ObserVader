@@ -1235,6 +1235,122 @@
       }
     },
     {
+      "id": 31,
+      "type": "timeseries",
+      "title": "Active vs Passive CCR Users",
+      "datasource": {
+        "type": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 56
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(max_over_time(copilot_ccr_users{type=\"active\",window=\"daily\"}[26h]))",
+          "legendFormat": "Active (Daily)",
+          "instant": false,
+          "range": true
+        },
+        {
+          "refId": "B",
+          "expr": "sum(max_over_time(copilot_ccr_users{type=\"passive\",window=\"daily\"}[26h]))",
+          "legendFormat": "Passive (Daily)",
+          "instant": false,
+          "range": true
+        },
+        {
+          "refId": "C",
+          "expr": "sum(max_over_time(copilot_ccr_users{type=\"active\",window=\"monthly\"}[26h]))",
+          "legendFormat": "Active (Monthly)",
+          "instant": false,
+          "range": true
+        },
+        {
+          "refId": "D",
+          "expr": "sum(max_over_time(copilot_ccr_users{type=\"passive\",window=\"monthly\"}[26h]))",
+          "legendFormat": "Passive (Monthly)",
+          "instant": false,
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 15,
+            "lineWidth": 2,
+            "pointSize": 5,
+            "showPoints": "auto",
+            "spanNulls": false,
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Passive (Daily)"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": { "fill": "dash", "dash": [10, 10] }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Passive (Monthly)"
+            },
+            "properties": [
+              {
+                "id": "custom.lineStyle",
+                "value": { "fill": "dash", "dash": [10, 10] }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "description": "Active = intentionally requested/applied CCR review. Passive = auto-triggered by repo policy. Active always trumps passive."
+    },
+    {
       "id": 19,
       "type": "row",
       "title": "\u26a1 Agent Observability (OTel)",
@@ -1243,7 +1359,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 64
       },
       "panels": []
     },

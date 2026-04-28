@@ -71,6 +71,14 @@ def compute_day_metrics(record, max_engaged_so_far):
     cloud_agent_mau = record.get("monthly_active_copilot_cloud_agent_users", 0) or 0
     metrics.append(("copilot_monthly_active_cloud_agent_users", cloud_agent_mau, {}))
 
+    # CCR aggregated user counts (Apr 22 2026)
+    metrics.append(("copilot_ccr_users", record.get("daily_active_copilot_code_review_users", 0), {"window": "daily", "type": "active"}))
+    metrics.append(("copilot_ccr_users", record.get("daily_passive_copilot_code_review_users", 0), {"window": "daily", "type": "passive"}))
+    metrics.append(("copilot_ccr_users", record.get("weekly_active_copilot_code_review_users", 0), {"window": "weekly", "type": "active"}))
+    metrics.append(("copilot_ccr_users", record.get("weekly_passive_copilot_code_review_users", 0), {"window": "weekly", "type": "passive"}))
+    metrics.append(("copilot_ccr_users", record.get("monthly_active_copilot_code_review_users", 0), {"window": "monthly", "type": "active"}))
+    metrics.append(("copilot_ccr_users", record.get("monthly_passive_copilot_code_review_users", 0), {"window": "monthly", "type": "passive"}))
+
     # Feature usage
     completions_section = record.get("copilot_ide_code_completions", {})
     metrics.append(("copilot_feature_usage", completions_section.get("total_engaged_users", 0), {"feature": "completions"}))

@@ -108,6 +108,15 @@ def generate_day(d: date, day_idx: int) -> dict:
     cloud_agent_wau = noise(lerp(25, 55, t))
     cloud_agent_mau = noise(lerp(40, 80, t))
 
+    # CCR aggregated user counts (Apr 22 2026 changelog)
+    # Active = user intentionally requested/applied CCR; Passive = auto-triggered by repo policy
+    ccr_active_dau = noise(lerp(12, 30, t) * wf)
+    ccr_passive_dau = noise(lerp(20, 45, t) * wf)
+    ccr_active_wau = noise(lerp(35, 70, t))
+    ccr_passive_wau = noise(lerp(50, 90, t))
+    ccr_active_mau = noise(lerp(55, 100, t))
+    ccr_passive_mau = noise(lerp(75, 130, t))
+
     # CLI contribution to top-level totals (Apr 10 2026 changelog)
     cli_code_gen = noise(cli_req * 0.85)
     cli_code_acc = noise(cli_code_gen * 0.40)
@@ -144,6 +153,13 @@ def generate_day(d: date, day_idx: int) -> dict:
         "daily_active_copilot_cloud_agent_users": cloud_agent_dau,
         "weekly_active_copilot_cloud_agent_users": cloud_agent_wau,
         "monthly_active_copilot_cloud_agent_users": cloud_agent_mau,
+        # CCR aggregated user counts (Apr 22 2026)
+        "daily_active_copilot_code_review_users": ccr_active_dau,
+        "daily_passive_copilot_code_review_users": ccr_passive_dau,
+        "weekly_active_copilot_code_review_users": ccr_active_wau,
+        "weekly_passive_copilot_code_review_users": ccr_passive_wau,
+        "monthly_active_copilot_code_review_users": ccr_active_mau,
+        "monthly_passive_copilot_code_review_users": ccr_passive_mau,
         "copilot_ide_code_completions": {
             "total_engaged_users": comp_users, "languages": languages, "editors": editors,
         },
